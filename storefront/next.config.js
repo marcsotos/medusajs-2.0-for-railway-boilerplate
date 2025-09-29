@@ -12,16 +12,20 @@ const nextConfig = {
       { protocol: "http", hostname: "localhost" },
 
       // Dominio público de tu app (p/ imágenes en /public)
-      {
-        protocol: process.env.NEXT_PUBLIC_BASE_URL?.startsWith("https") ? "https" : "http",
-        hostname: process.env.NEXT_PUBLIC_BASE_URL?.replace(/^https?:\/\//, ""),
-      },
+      ...(process.env.NEXT_PUBLIC_BASE_URL
+        ? [{
+            protocol: process.env.NEXT_PUBLIC_BASE_URL.startsWith("https") ? "https" : "http",
+            hostname: process.env.NEXT_PUBLIC_BASE_URL.replace(/^https?:\/\//, ""),
+          }]
+        : []),
 
       // Medusa backend (solo si usas local-file para media)
-      {
-        protocol: "https",
-        hostname: process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL?.replace(/^https?:\/\//, ""),
-      },
+      ...(process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
+        ? [{
+            protocol: "https",
+            hostname: process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL.replace(/^https?:\/\//, ""),
+          }]
+        : []),
 
       // Demo media de Medusa (puedes borrarlos cuando no los uses)
       { protocol: "https", hostname: "medusa-public-images.s3.eu-west-1.amazonaws.com" },
@@ -37,10 +41,10 @@ const nextConfig = {
         : []),
 
       // ✅ MinIO (host fijo de Railway) – por si la ENV no está presente
-      {
-        protocol: "https",
-        hostname: "bucket-production-23c8.up.railway.app",
-      },
+      { protocol: "https", hostname: "bucket-production-23c8.up.railway.app" },
+
+      // ✅ Sanity CDN
+      { protocol: "https", hostname: "cdn.sanity.io" },
     ],
   },
   serverRuntimeConfig: {
