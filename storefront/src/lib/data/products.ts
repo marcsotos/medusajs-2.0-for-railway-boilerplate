@@ -17,7 +17,9 @@ export const getProductsById = cache(async function ({
       {
         id: ids,
         region_id: regionId,
-        fields: "*variants.calculated_price,+variants.inventory_quantity",
+        // 👇 Incluimos metadata a nivel producto y variante
+        fields:
+          "*metadata,*variants.metadata,*variants.calculated_price,+variants.inventory_quantity",
       },
       { next: { tags: ["products"] } }
     )
@@ -33,7 +35,9 @@ export const getProductByHandle = cache(async function (
       {
         handle,
         region_id: regionId,
-        fields: "*variants.calculated_price,+variants.inventory_quantity",
+        // 👇 Añadimos metadata para que llegue a tu ProductTabs
+        fields:
+          "*metadata,*variants.metadata,*variants.calculated_price,+variants.inventory_quantity",
       },
       { next: { tags: ["products"] } }
     )
@@ -54,7 +58,7 @@ export const getProductsList = cache(async function ({
   queryParams?: HttpTypes.FindParams & HttpTypes.StoreProductParams
 }> {
   const limit = queryParams?.limit || 12
-  const validPageParam = Math.max(pageParam, 1);
+  const validPageParam = Math.max(pageParam, 1)
   const offset = (validPageParam - 1) * limit
   const region = await getRegion(countryCode)
 
@@ -64,13 +68,16 @@ export const getProductsList = cache(async function ({
       nextPage: null,
     }
   }
+
   return sdk.store.product
     .list(
       {
         limit,
         offset,
         region_id: region.id,
-        fields: "*variants.calculated_price",
+        // 👇 También aquí para listados (útil si muestras ingredientes en cards)
+        fields:
+          "*metadata,*variants.metadata,*variants.calculated_price",
         ...queryParams,
       },
       { next: { tags: ["products"] } }
@@ -124,9 +131,7 @@ export const getProductsListWithSort = cache(async function ({
   const sortedProducts = sortProducts(products, sortBy)
 
   const pageParam = (page - 1) * limit
-
   const nextPage = count > pageParam + limit ? pageParam + limit : null
-
   const paginatedProducts = sortedProducts.slice(pageParam, pageParam + limit)
 
   return {

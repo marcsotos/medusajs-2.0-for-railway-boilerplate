@@ -12,11 +12,23 @@ type ProductTabsProps = {
 }
 
 const ProductTabs = ({ product }: ProductTabsProps) => {
+  const ingredients =
+    (product.metadata?.ingredients as string | undefined)?.trim() || null
+
   const tabs = [
     {
       label: "Product Information",
       component: <ProductInfoTab product={product} />,
     },
+    // 👇 añadimos solo si existen ingredientes
+    ...(ingredients
+      ? [
+          {
+            label: "Ingredients",
+            component: <IngredientsTab ingredients={ingredients} />,
+          },
+        ]
+      : []),
     {
       label: "Shipping & Returns",
       component: <ShippingInfoTab />,
@@ -74,6 +86,15 @@ const ProductInfoTab = ({ product }: ProductTabsProps) => {
           </div>
         </div>
       </div>
+    </div>
+  )
+}
+
+// 👇 Ahora IngredientsTab recibe solo la string ya validada
+const IngredientsTab = ({ ingredients }: { ingredients: string }) => {
+  return (
+    <div className="text-small-regular py-8">
+      <p className="whitespace-pre-line">{ingredients}</p>
     </div>
   )
 }

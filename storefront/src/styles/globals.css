@@ -2,6 +2,18 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+/* Variables de color personalizadas */
+:root {
+  --primary-dark: #2d3748;
+  --primary-light: #4a5568;
+  --accent-yellow: #ffeb3b;
+  --accent-green: #2e7d32;
+  --accent-blue: #1565c0;
+  --accent-orange: #e65100;
+  --bg-cream: #fef5e7;
+  --bg-light: #fff9e6;
+}
+
 @layer utilities {
   /* Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
@@ -47,17 +59,91 @@
   input[type="search"]::-webkit-search-results-decoration {
     -webkit-appearance: none;
   }
+
+  /* Animaciones suaves */
+  .smooth-transition {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  /* Sombras personalizadas */
+  .shadow-soft {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .shadow-card {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Hover effects */
+  .hover-lift {
+    @apply transition-transform duration-300 ease-in-out;
+  }
+
+  .hover-lift:hover {
+    @apply -translate-y-1;
+  }
+
+  /* Gradient backgrounds */
+  .gradient-primary {
+    background: linear-gradient(135deg, var(--bg-cream) 0%, var(--bg-light) 100%);
+  }
+
+  .gradient-green {
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  }
+
+  .gradient-blue {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  }
+
+  .gradient-orange {
+    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  }
+
+  /* Blur effect para overlays */
+  .backdrop-blur-soft {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
 }
 
 @layer components {
   .content-container {
-    @apply max-w-[1440px] w-full mx-auto px-6;
+    @apply max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:px-8;
   }
 
   .contrast-btn {
     @apply px-4 py-2 border border-black rounded-full hover:bg-black hover:text-white transition-colors duration-200 ease-in;
   }
 
+  /* Botones personalizados estilo Atida */
+  .btn-primary {
+    @apply bg-[#2d3748] hover:bg-[#1a202c] text-white px-6 py-3 rounded-md font-medium transition-all duration-200 shadow-md hover:shadow-lg;
+  }
+
+  .btn-secondary {
+    @apply bg-white hover:bg-gray-50 text-[#2d3748] border-2 border-[#2d3748] px-6 py-3 rounded-md font-medium transition-all duration-200;
+  }
+
+  .btn-outline {
+    @apply border-2 border-current px-6 py-2 rounded-md font-medium hover:bg-current hover:text-white transition-colors duration-200;
+  }
+
+  /* Cards de producto */
+  .product-card {
+    @apply bg-white rounded-lg overflow-hidden hover:shadow-card transition-shadow duration-300 cursor-pointer;
+  }
+
+  .promo-card {
+    @apply rounded-lg p-6 hover:shadow-lg transition-all duration-300 cursor-pointer hover-lift;
+  }
+
+  /* Badge de descuento */
+  .discount-badge {
+    @apply inline-flex items-center justify-center px-3 py-1 text-sm font-bold rounded-full;
+  }
+
+  /* Typography classes */
   .text-xsmall-regular {
     @apply text-[10px] leading-4 font-normal;
   }
@@ -108,5 +194,117 @@
 
   .text-3xl-semi {
     @apply text-[32px] leading-[44px] font-semibold;
+  }
+
+  /* Heading styles */
+  .heading-hero {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold text-[#2d3748] leading-tight;
+  }
+
+  .heading-section {
+    @apply text-2xl md:text-3xl font-bold text-[#2d3748] mb-6;
+  }
+
+  .heading-card {
+    @apply text-lg md:text-xl font-semibold text-[#2d3748];
+  }
+
+  /* Link styles */
+  .link-underline {
+    @apply underline hover:no-underline transition-all duration-200;
+  }
+
+  .link-hover {
+    @apply hover:text-[#2d3748] transition-colors duration-200;
+  }
+
+  /* Input styles mejorados */
+  .input-field {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2d3748] focus:border-transparent transition-all duration-200;
+  }
+
+  /* Spinner loader */
+  .spinner {
+    @apply inline-block w-6 h-6 border-4 border-gray-200 border-t-[#2d3748] rounded-full animate-spin;
+  }
+
+  /* Grid layouts comunes */
+  .grid-products {
+    @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6;
+  }
+
+  .grid-promo {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4;
+  }
+
+  /* Container para secciones */
+  .section-container {
+    @apply py-12 md:py-16 lg:py-20;
+  }
+
+  /* Banner promocional */
+  .promo-banner {
+    @apply w-full bg-[#1a1f3a] text-white text-center py-2 text-sm font-medium;
+  }
+}
+
+/* Animaciones personalizadas */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.animate-slideIn {
+  animation: slideIn 0.3s ease-out;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+/* Mejoras de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Estilos para modo oscuro (opcional) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary-dark: #f7fafc;
+    --primary-light: #e2e8f0;
   }
 }
