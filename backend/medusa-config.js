@@ -115,7 +115,7 @@ const medusaConfig = {
     // ===== SANITY (módulo local) =====
     {
       // 👇 Ruta corregida: el código está bajo /backend/src/modules/sanity
-      resolve: './backend/src/modules/sanity',
+      resolve: './src/modules/sanity',
       options: {
         project_id: process.env.SANITY_PROJECT_ID,
         dataset: process.env.SANITY_DATASET || 'production',
