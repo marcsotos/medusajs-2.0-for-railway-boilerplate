@@ -1,0 +1,6 @@
+{
+	"dependencies": {
+		"@sanity/client": "^7.11.2",
+		"medusa-plugin-sanity": "^2.0.0"
+	}
+}
