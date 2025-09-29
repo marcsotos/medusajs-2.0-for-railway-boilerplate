@@ -1,4 +1,3 @@
-import { Github } from "@medusajs/icons"
 import { Button, Heading } from "@medusajs/ui"
 
 const Hero = () => {
@@ -10,7 +9,7 @@ const Hero = () => {
             level="h1"
             className="text-3xl leading-10 text-ui-fg-base font-normal"
           >
-            Well done! You have successfully deployed your Medusa 2.0 store on Railway!
+           Bienvenido a Mono Banano
           </Heading>
           <Heading
             level="h2"
