@@ -113,6 +113,24 @@ const medusaConfig = {
       },
     },
 
+    // ===== SANITY (módulo local) =====
+    {
+      resolve: "./backend/src/modules/sanity",
+      options: {
+        project_id: process.env.SANITY_PROJECT_ID,
+        dataset: process.env.SANITY_DATASET || 'production',
+        api_token: process.env.SANITY_API_TOKEN,
+        api_version: process.env.SANITY_API_VERSION || '2024-01-01',
+        // studio_url: opcional si publicas el Studio
+        type_map: {
+          product: 'product',
+          // podrás ampliar más adelante:
+          // productVariant: 'productVariant',
+          // collection: 'collection',
+        },
+      },
+    },
+
     // ===== REDIS (event bus + workflows) =====
     ...(REDIS_URL
       ? [
