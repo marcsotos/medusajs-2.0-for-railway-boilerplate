@@ -10,44 +10,48 @@ export default async function Nav() {
   const regions = await listRegions().then((regions: StoreRegion[]) => regions)
 
   return (
-    <div className="sticky top-0 inset-x-0 z-50 group">
-      {/* Banner Promocional Superior */}
-      <div className="promo-banner">
-        🍌 Envío gratis en pedidos superiores a 50€
+    <div className="sticky top-0 inset-x-0 z-50">
+      {/* Banner Promocional Profesional */}
+      <div className="bg-slate-900 text-white text-center py-2 text-sm font-medium">
+        <div className="content-container">
+          Envío gratuito en pedidos superiores a 50€ • Atención al cliente 24/7
+        </div>
       </div>
 
-      {/* Header Principal */}
-      <header className="relative mx-auto duration-200 bg-white border-b border-ui-border-base shadow-sm">
-        <nav className="content-container flex items-center justify-between w-full h-16 sm:h-20">
+      {/* Header Principal Profesional */}
+      <header className="bg-white border-b border-gray-200 shadow-sm">
+        <nav className="content-container flex items-center justify-between w-full h-16">
           {/* Logo y Menu Mobile - Izquierda */}
-          <div className="flex items-center gap-4 flex-1 basis-0">
+          <div className="flex items-center gap-6 flex-1 basis-0">
             <div className="h-full flex items-center">
               <SideMenu regions={regions} />
             </div>
             
-            {/* Logo */}
+            {/* Logo Profesional */}
             <LocalizedClientLink
               href="/"
-              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+              className="flex items-center gap-3 hover:opacity-90 transition-opacity duration-200"
               data-testid="nav-store-link"
             >
               <div className="flex items-center">
-                <span className="text-2xl sm:text-3xl">🍌</span>
-                <div className="ml-2 hidden sm:block">
-                  <span className="block text-lg font-bold text-[#2d3748] leading-tight">
+                <div className="w-8 h-8 bg-slate-900 rounded-md flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">MB</span>
+                </div>
+                <div className="ml-3 hidden sm:block">
+                  <span className="block text-lg font-semibold text-slate-900 leading-tight">
                     Mono Banano
                   </span>
-                  <span className="block text-xs text-gray-500 leading-tight">
-                    Natural & Saludable
+                  <span className="block text-xs text-slate-600 leading-tight">
+                    Productos Naturales
                   </span>
                 </div>
               </div>
             </LocalizedClientLink>
           </div>
 
-          {/* Barra de Búsqueda - Centro (Desktop) */}
+          {/* Barra de Búsqueda Profesional - Centro (Desktop) */}
           {process.env.NEXT_PUBLIC_FEATURE_SEARCH_ENABLED && (
-            <div className="hidden md:flex flex-1 max-w-xl mx-8">
+            <div className="hidden md:flex flex-1 max-w-md mx-8">
               <LocalizedClientLink
                 href="/search"
                 scroll={false}
@@ -57,12 +61,12 @@ export default async function Nav() {
                 <div className="relative w-full">
                   <input
                     type="text"
-                    placeholder="¿Qué estás buscando?"
-                    className="w-full px-4 py-2 pr-10 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#2d3748] focus:border-transparent text-sm"
+                    placeholder="Buscar productos..."
+                    className="w-full px-4 py-2 pr-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent text-sm bg-white"
                     readOnly
                   />
                   <svg
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -79,18 +83,18 @@ export default async function Nav() {
             </div>
           )}
 
-          {/* Acciones - Derecha */}
-          <div className="flex items-center gap-3 sm:gap-6 flex-1 basis-0 justify-end">
+          {/* Acciones Profesionales - Derecha */}
+          <div className="flex items-center gap-4 flex-1 basis-0 justify-end">
             {/* Búsqueda Mobile */}
             {process.env.NEXT_PUBLIC_FEATURE_SEARCH_ENABLED && (
               <LocalizedClientLink
-                className="md:hidden hover:text-[#2d3748] transition-colors"
+                className="md:hidden p-2 hover:bg-gray-100 rounded-md transition-colors duration-200"
                 href="/search"
                 scroll={false}
                 data-testid="nav-search-link-mobile"
               >
                 <svg
-                  className="w-6 h-6"
+                  className="w-5 h-5 text-gray-600"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -105,14 +109,14 @@ export default async function Nav() {
               </LocalizedClientLink>
             )}
 
-            {/* Soporte/Ayuda */}
+            {/* Soporte */}
             <LocalizedClientLink
-              className="hidden sm:flex items-center gap-1 hover:text-[#2d3748] transition-colors text-sm"
+              className="hidden sm:flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded-md transition-colors duration-200"
               href="/support"
               data-testid="nav-support-link"
             >
               <svg
-                className="w-5 h-5"
+                className="w-5 h-5 text-gray-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -121,20 +125,20 @@ export default async function Nav() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"
+                  d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <span className="hidden lg:inline">Ayuda</span>
+              <span className="hidden lg:inline text-sm text-gray-700">Ayuda</span>
             </LocalizedClientLink>
 
             {/* Account */}
             <LocalizedClientLink
-              className="flex items-center gap-1 hover:text-[#2d3748] transition-colors text-sm"
+              className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded-md transition-colors duration-200"
               href="/account"
               data-testid="nav-account-link"
             >
               <svg
-                className="w-6 h-6"
+                className="w-5 h-5 text-gray-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -146,19 +150,19 @@ export default async function Nav() {
                   d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                 />
               </svg>
-              <span className="hidden lg:inline">Cuenta</span>
+              <span className="hidden lg:inline text-sm text-gray-700">Cuenta</span>
             </LocalizedClientLink>
 
             {/* Cart */}
             <Suspense
               fallback={
                 <LocalizedClientLink
-                  className="flex items-center gap-1 hover:text-[#2d3748] transition-colors relative"
+                  className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded-md transition-colors duration-200 relative"
                   href="/cart"
                   data-testid="nav-cart-link"
                 >
                   <svg
-                    className="w-6 h-6"
+                    className="w-5 h-5 text-gray-600"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -170,7 +174,7 @@ export default async function Nav() {
                       d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                     />
                   </svg>
-                  <span className="absolute -top-2 -right-2 bg-[#2d3748] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-semibold">
+                  <span className="absolute -top-1 -right-1 bg-slate-900 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-medium">
                     0
                   </span>
                 </LocalizedClientLink>
@@ -181,37 +185,41 @@ export default async function Nav() {
           </div>
         </nav>
 
-        {/* Barra de Navegación Secundaria - Desktop */}
-        <div className="hidden lg:block border-t border-gray-100">
+        {/* Barra de Navegación Secundaria Profesional - Desktop */}
+        <div className="hidden lg:block border-t border-gray-200 bg-gray-50">
           <div className="content-container">
             <div className="flex items-center justify-center gap-8 py-3 text-sm">
               <LocalizedClientLink
                 href="/store"
-                className="hover:text-[#2d3748] transition-colors font-medium"
+                className="px-4 py-2 text-gray-700 hover:text-slate-900 hover:bg-white rounded-md transition-colors duration-200 font-medium"
               >
                 Productos
               </LocalizedClientLink>
+              
               <LocalizedClientLink
                 href="/collections"
-                className="hover:text-[#2d3748] transition-colors font-medium"
+                className="px-4 py-2 text-gray-700 hover:text-slate-900 hover:bg-white rounded-md transition-colors duration-200 font-medium"
               >
                 Colecciones
               </LocalizedClientLink>
+              
               <LocalizedClientLink
                 href="/offers"
-                className="hover:text-[#2d3748] transition-colors font-medium text-[#e65100]"
+                className="px-4 py-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors duration-200 font-medium"
               >
-                🔥 Ofertas
+                Ofertas
               </LocalizedClientLink>
+              
               <LocalizedClientLink
                 href="/about"
-                className="hover:text-[#2d3748] transition-colors font-medium"
+                className="px-4 py-2 text-gray-700 hover:text-slate-900 hover:bg-white rounded-md transition-colors duration-200 font-medium"
               >
                 Sobre Nosotros
               </LocalizedClientLink>
+              
               <LocalizedClientLink
                 href="/blog"
-                className="hover:text-[#2d3748] transition-colors font-medium"
+                className="px-4 py-2 text-gray-700 hover:text-slate-900 hover:bg-white rounded-md transition-colors duration-200 font-medium"
               >
                 Blog
               </LocalizedClientLink>

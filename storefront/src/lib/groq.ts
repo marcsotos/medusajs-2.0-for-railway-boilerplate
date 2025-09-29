@@ -9,3 +9,16 @@ export const productByMedusaId = `
   additionalContent,
   features
 }`
+
+export const homePage = `
+*[_type == "home"][0]{
+  title,
+  description,
+  hero{
+    heading,
+    subheading,
+    image{asset->},
+    ctaLabel,
+    ctaHref
+  }
+}`
