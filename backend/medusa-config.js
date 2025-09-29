@@ -86,7 +86,7 @@ const medusaConfig = {
                 options: {
                   endpoint: S3_ENDPOINT,                 // p.ej. https://bucket-production-23c8.up.railway.app
                   bucket: BUCKET,                        // p.ej. "medusa-media"
-                  region: process.env.S3_REGION || 'us-east-1',
+                  region: process.env.S3_REGION || 'us-west-2',
                   access_key_id: ACCESS_KEY,             // MINIO_ROOT_USER o MINIO_ACCESS_KEY
                   secret_access_key: SECRET_KEY,         // MINIO_ROOT_PASSWORD o MINIO_SECRET_KEY
 
@@ -112,10 +112,10 @@ const medusaConfig = {
             ],
       },
     },
-
     // ===== SANITY (módulo local) =====
     {
-      resolve: "./backend/src/modules/sanity",
+      // 👇 Ruta corregida: el código está bajo /backend/src/modules/sanity
+      resolve: './backend/src/modules/sanity',
       options: {
         project_id: process.env.SANITY_PROJECT_ID,
         dataset: process.env.SANITY_DATASET || 'production',
@@ -177,7 +177,8 @@ const medusaConfig = {
                 ...(RESEND_API_KEY && RESEND_FROM_EMAIL
                   ? [
                       {
-                        resolve: './src/modules/email-notifications',
+                        // 👇 también corrijo la ruta si tu módulo está bajo /backend/src/modules
+                        resolve: './backend/src/modules/email-notifications',
                         id: 'resend',
                         options: {
                           channels: ['email'],

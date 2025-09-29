@@ -13,7 +13,7 @@ importers:
         version: 7.11.2
       medusa-plugin-sanity:
         specifier: ^2.0.0
-        version: 2.0.0(@medusajs/types@1.11.17)(@mikro-orm/core@5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7))(@types/node@24.6.0)(ioredis@5.8.0)(medusa-interfaces@1.3.7)(pg-god@1.0.12)(pg@8.11.3)(redis-commands@1.7.0)(redis@3.1.2)(sqlite3@5.1.7)
+        version: 2.0.0(@medusajs/types@1.11.17)(@mikro-orm/core@5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7))(@types/node@24.6.0)(ioredis@5.8.0)(medusa-interfaces@1.3.7)(pg-god@1.0.12)(pg@8.16.3)(redis-commands@1.7.0)(redis@3.1.2)(sqlite3@5.1.7)
 
 packages:
 
@@ -2794,9 +2794,9 @@ snapshots:
       - supports-color
       - tedious
 
-  '@medusajs/cache-redis@1.8.0(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7)':
+  '@medusajs/cache-redis@1.8.0(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7)':
     dependencies:
-      '@medusajs/modules-sdk': 1.8.0(ioredis@5.8.0)(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7)
+      '@medusajs/modules-sdk': 1.8.0(ioredis@5.8.0)(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7)
       awilix: 8.0.1
       ioredis: 5.8.0
     transitivePeerDependencies:
@@ -2819,10 +2819,10 @@ snapshots:
       - ts-node
       - typeorm-aurora-data-api-driver
 
-  '@medusajs/event-bus-local@1.9.9(@types/node@24.6.0)(pg@8.11.3)(sqlite3@5.1.7)':
+  '@medusajs/event-bus-local@1.9.9(@types/node@24.6.0)(pg@8.16.3)(sqlite3@5.1.7)':
     dependencies:
       '@medusajs/modules-sdk': 1.12.12(@types/node@24.6.0)(sqlite3@5.1.7)
-      '@medusajs/utils': 1.11.11(@types/node@24.6.0)(pg@8.11.3)(sqlite3@5.1.7)
+      '@medusajs/utils': 1.11.11(@types/node@24.6.0)(pg@8.16.3)(sqlite3@5.1.7)
       ulid: 2.4.0
     transitivePeerDependencies:
       - '@mikro-orm/better-sqlite'
@@ -2844,10 +2844,10 @@ snapshots:
       - supports-color
       - tedious
 
-  '@medusajs/event-bus-redis@1.8.0(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7)':
+  '@medusajs/event-bus-redis@1.8.0(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7)':
     dependencies:
-      '@medusajs/modules-sdk': 1.8.0(ioredis@5.8.0)(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7)
-      '@medusajs/utils': 1.8.0(ioredis@5.8.0)(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7)
+      '@medusajs/modules-sdk': 1.8.0(ioredis@5.8.0)(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7)
+      '@medusajs/utils': 1.8.0(ioredis@5.8.0)(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7)
       awilix: 8.0.1
       bullmq: 3.16.2
       ioredis: 5.8.0
@@ -2871,9 +2871,9 @@ snapshots:
       - ts-node
       - typeorm-aurora-data-api-driver
 
-  '@medusajs/medusa-cli@1.3.9(@types/node@24.6.0)(ioredis@5.8.0)(pg@8.11.3)(redis@3.1.2)':
+  '@medusajs/medusa-cli@1.3.9(@types/node@24.6.0)(ioredis@5.8.0)(pg@8.16.3)(redis@3.1.2)':
     dependencies:
-      '@medusajs/utils': 1.8.0(ioredis@5.8.0)(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7)
+      '@medusajs/utils': 1.8.0(ioredis@5.8.0)(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7)
       axios: 0.21.4
       chalk: 4.1.2
       configstore: 5.0.1
@@ -2923,12 +2923,12 @@ snapshots:
       - ts-node
       - typeorm-aurora-data-api-driver
 
-  '@medusajs/medusa@1.8.0(@medusajs/types@1.11.17)(@mikro-orm/core@5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7))(@types/node@24.6.0)(medusa-interfaces@1.3.7)(pg-god@1.0.12)(pg@8.11.3)(redis-commands@1.7.0)(sqlite3@5.1.7)(typeorm@0.3.11(ioredis@5.8.0)(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7))':
+  '@medusajs/medusa@1.8.0(@medusajs/types@1.11.17)(@mikro-orm/core@5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7))(@types/node@24.6.0)(medusa-interfaces@1.3.7)(pg-god@1.0.12)(pg@8.16.3)(redis-commands@1.7.0)(sqlite3@5.1.7)(typeorm@0.3.11(ioredis@5.8.0)(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7))':
     dependencies:
-      '@medusajs/medusa-cli': 1.3.9(@types/node@24.6.0)(ioredis@5.8.0)(pg@8.11.3)(redis@3.1.2)
-      '@medusajs/modules-sdk': 1.8.0(ioredis@5.8.0)(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7)
+      '@medusajs/medusa-cli': 1.3.9(@types/node@24.6.0)(ioredis@5.8.0)(pg@8.16.3)(redis@3.1.2)
+      '@medusajs/modules-sdk': 1.8.0(ioredis@5.8.0)(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7)
       '@medusajs/types': 1.11.17
-      '@medusajs/utils': 1.8.0(ioredis@5.8.0)(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7)
+      '@medusajs/utils': 1.8.0(ioredis@5.8.0)(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7)
       '@types/ioredis': 4.28.10
       '@types/lodash': 4.17.20
       awilix: 8.0.1
@@ -2956,7 +2956,7 @@ snapshots:
       medusa-core-utils: 1.2.3
       medusa-interfaces: 1.3.7
       medusa-telemetry: 0.0.16
-      medusa-test-utils: 1.1.45(@medusajs/medusa@1.8.0(@medusajs/types@1.11.17)(@mikro-orm/core@5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7))(@types/node@24.6.0)(medusa-interfaces@1.3.7)(pg-god@1.0.12)(pg@8.11.3)(redis-commands@1.7.0)(sqlite3@5.1.7)(typeorm@0.3.11(ioredis@5.8.0)(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7)))(@medusajs/modules-sdk@1.8.0(ioredis@5.8.0)(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7))(@mikro-orm/core@5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7))(@types/node@24.6.0)(express@4.21.2)(pg-god@1.0.12)(pg@8.11.3)(sqlite3@5.1.7)(typeorm@0.3.11(ioredis@5.8.0)(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7))
+      medusa-test-utils: 1.1.45(@medusajs/medusa@1.8.0(@medusajs/types@1.11.17)(@mikro-orm/core@5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7))(@types/node@24.6.0)(medusa-interfaces@1.3.7)(pg-god@1.0.12)(pg@8.16.3)(redis-commands@1.7.0)(sqlite3@5.1.7)(typeorm@0.3.11(ioredis@5.8.0)(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7)))(@medusajs/modules-sdk@1.8.0(ioredis@5.8.0)(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7))(@mikro-orm/core@5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7))(@types/node@24.6.0)(express@4.21.2)(pg-god@1.0.12)(pg@8.16.3)(sqlite3@5.1.7)(typeorm@0.3.11(ioredis@5.8.0)(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7))
       morgan: 1.10.1
       multer: 1.4.4
       node-schedule: 2.1.1
@@ -2971,7 +2971,7 @@ snapshots:
       regenerator-runtime: 0.13.11
       request-ip: 2.2.0
       scrypt-kdf: 2.0.1
-      typeorm: 0.3.11(ioredis@5.8.0)(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7)
+      typeorm: 0.3.11(ioredis@5.8.0)(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7)
       ulid: 2.4.0
       uuid: 8.3.2
       winston: 3.17.0
@@ -3042,10 +3042,10 @@ snapshots:
       - supports-color
       - tedious
 
-  '@medusajs/modules-sdk@1.8.0(ioredis@5.8.0)(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7)':
+  '@medusajs/modules-sdk@1.8.0(ioredis@5.8.0)(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7)':
     dependencies:
       '@medusajs/types': 1.8.0
-      '@medusajs/utils': 1.8.0(ioredis@5.8.0)(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7)
+      '@medusajs/utils': 1.8.0(ioredis@5.8.0)(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7)
       awilix: 8.0.1
       glob: 7.1.6
       medusa-telemetry: 0.0.16
@@ -3101,41 +3101,11 @@ snapshots:
 
   '@medusajs/types@1.8.0': {}
 
-  '@medusajs/utils@1.11.11(@types/node@24.6.0)(pg@8.11.3)(sqlite3@5.1.7)':
-    dependencies:
-      '@medusajs/types': 1.11.17
-      '@mikro-orm/core': 5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7)
-      '@mikro-orm/migrations': 5.9.7(@mikro-orm/core@5.9.7)(@types/node@24.6.0)(pg@8.11.3)(sqlite3@5.1.7)
-      '@mikro-orm/postgresql': 5.9.7(@mikro-orm/core@5.9.7)(@mikro-orm/migrations@5.9.7)(sqlite3@5.1.7)
-      awilix: 8.0.1
-      bignumber.js: 9.3.1
-      knex: 2.4.2(pg@8.11.3)(sqlite3@5.1.7)
-      ulid: 2.4.0
-    transitivePeerDependencies:
-      - '@mikro-orm/better-sqlite'
-      - '@mikro-orm/entity-generator'
-      - '@mikro-orm/mariadb'
-      - '@mikro-orm/migrations-mongodb'
-      - '@mikro-orm/mongodb'
-      - '@mikro-orm/mysql'
-      - '@mikro-orm/seeder'
-      - '@mikro-orm/sqlite'
-      - '@types/node'
-      - better-sqlite3
-      - mssql
-      - mysql
-      - mysql2
-      - pg
-      - pg-native
-      - sqlite3
-      - supports-color
-      - tedious
-
   '@medusajs/utils@1.11.11(@types/node@24.6.0)(pg@8.16.3)(sqlite3@5.1.7)':
     dependencies:
       '@medusajs/types': 1.11.17
       '@mikro-orm/core': 5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7)
-      '@mikro-orm/migrations': 5.9.7(@mikro-orm/core@5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7))(@types/node@24.6.0)(pg@8.16.3)(sqlite3@5.1.7)
+      '@mikro-orm/migrations': 5.9.7(@mikro-orm/core@5.9.7)(@types/node@24.6.0)(pg@8.16.3)(sqlite3@5.1.7)
       '@mikro-orm/postgresql': 5.9.7(@mikro-orm/core@5.9.7)(@mikro-orm/migrations@5.9.7)(sqlite3@5.1.7)
       awilix: 8.0.1
       bignumber.js: 9.3.1
@@ -3161,12 +3131,12 @@ snapshots:
       - supports-color
       - tedious
 
-  '@medusajs/utils@1.8.0(ioredis@5.8.0)(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7)':
+  '@medusajs/utils@1.8.0(ioredis@5.8.0)(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7)':
     dependencies:
       awilix: 8.0.1
       class-transformer: 0.5.1
       class-validator: 0.13.2
-      typeorm: 0.3.11(ioredis@5.8.0)(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7)
+      typeorm: 0.3.11(ioredis@5.8.0)(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7)
       ulid: 2.4.0
     transitivePeerDependencies:
       - '@google-cloud/spanner'
@@ -3198,7 +3168,7 @@ snapshots:
       mikro-orm: 5.9.7
       reflect-metadata: 0.1.13
     optionalDependencies:
-      '@mikro-orm/migrations': 5.9.7(@mikro-orm/core@5.9.7)(@types/node@24.6.0)(pg@8.11.3)(sqlite3@5.1.7)
+      '@mikro-orm/migrations': 5.9.7(@mikro-orm/core@5.9.7)(@types/node@24.6.0)(pg@8.16.3)(sqlite3@5.1.7)
       '@mikro-orm/postgresql': 5.9.7(@mikro-orm/core@5.9.7)(@mikro-orm/migrations@5.9.7)(sqlite3@5.1.7)
 
   '@mikro-orm/knex@5.9.7(@mikro-orm/core@5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7))(@mikro-orm/migrations@5.9.7)(pg@8.11.3)(sqlite3@5.1.7)':
@@ -3208,7 +3178,7 @@ snapshots:
       knex: 2.5.1(pg@8.11.3)(sqlite3@5.1.7)
       sqlstring: 2.3.3
     optionalDependencies:
-      '@mikro-orm/migrations': 5.9.7(@mikro-orm/core@5.9.7)(@types/node@24.6.0)(pg@8.11.3)(sqlite3@5.1.7)
+      '@mikro-orm/migrations': 5.9.7(@mikro-orm/core@5.9.7)(@types/node@24.6.0)(pg@8.16.3)(sqlite3@5.1.7)
       pg: 8.11.3
       sqlite3: 5.1.7
     transitivePeerDependencies:
@@ -3223,7 +3193,7 @@ snapshots:
       knex: 2.5.1(pg@8.16.3)(sqlite3@5.1.7)
       sqlstring: 2.3.3
     optionalDependencies:
-      '@mikro-orm/migrations': 5.9.7(@mikro-orm/core@5.9.7)(@types/node@24.6.0)(pg@8.11.3)(sqlite3@5.1.7)
+      '@mikro-orm/migrations': 5.9.7(@mikro-orm/core@5.9.7)(@types/node@24.6.0)(pg@8.16.3)(sqlite3@5.1.7)
       pg: 8.16.3
       sqlite3: 5.1.7
     transitivePeerDependencies:
@@ -3231,32 +3201,12 @@ snapshots:
       - supports-color
       - tedious
 
-  '@mikro-orm/migrations@5.9.7(@mikro-orm/core@5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7))(@types/node@24.6.0)(pg@8.16.3)(sqlite3@5.1.7)':
+  '@mikro-orm/migrations@5.9.7(@mikro-orm/core@5.9.7)(@types/node@24.6.0)(pg@8.16.3)(sqlite3@5.1.7)':
     dependencies:
       '@mikro-orm/core': 5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7)
       '@mikro-orm/knex': 5.9.7(@mikro-orm/core@5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7))(@mikro-orm/migrations@5.9.7)(pg@8.16.3)(sqlite3@5.1.7)
       fs-extra: 11.1.1
       knex: 2.5.1(pg@8.16.3)(sqlite3@5.1.7)
-      umzug: 3.3.1(@types/node@24.6.0)
-    transitivePeerDependencies:
-      - '@mikro-orm/entity-generator'
-      - '@types/node'
-      - better-sqlite3
-      - mssql
-      - mysql
-      - mysql2
-      - pg
-      - pg-native
-      - sqlite3
-      - supports-color
-      - tedious
-
-  '@mikro-orm/migrations@5.9.7(@mikro-orm/core@5.9.7)(@types/node@24.6.0)(pg@8.11.3)(sqlite3@5.1.7)':
-    dependencies:
-      '@mikro-orm/core': 5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7)
-      '@mikro-orm/knex': 5.9.7(@mikro-orm/core@5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7))(@mikro-orm/migrations@5.9.7)(pg@8.11.3)(sqlite3@5.1.7)
-      fs-extra: 11.1.1
-      knex: 2.5.1(pg@8.11.3)(sqlite3@5.1.7)
       umzug: 3.3.1(@types/node@24.6.0)
     transitivePeerDependencies:
       - '@mikro-orm/entity-generator'
@@ -3277,7 +3227,7 @@ snapshots:
       '@mikro-orm/knex': 5.9.7(@mikro-orm/core@5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7))(@mikro-orm/migrations@5.9.7)(pg@8.11.3)(sqlite3@5.1.7)
       pg: 8.11.3
     optionalDependencies:
-      '@mikro-orm/migrations': 5.9.7(@mikro-orm/core@5.9.7)(@types/node@24.6.0)(pg@8.11.3)(sqlite3@5.1.7)
+      '@mikro-orm/migrations': 5.9.7(@mikro-orm/core@5.9.7)(@types/node@24.6.0)(pg@8.16.3)(sqlite3@5.1.7)
     transitivePeerDependencies:
       - better-sqlite3
       - mssql
@@ -4723,28 +4673,6 @@ snapshots:
 
   kleur@3.0.3: {}
 
-  knex@2.4.2(pg@8.11.3)(sqlite3@5.1.7):
-    dependencies:
-      colorette: 2.0.19
-      commander: 9.5.0
-      debug: 4.3.4
-      escalade: 3.2.0
-      esm: 3.2.25
-      get-package-type: 0.1.0
-      getopts: 2.3.0
-      interpret: 2.2.0
-      lodash: 4.17.21
-      pg-connection-string: 2.5.0
-      rechoir: 0.8.0
-      resolve-from: 5.0.0
-      tarn: 3.0.2
-      tildify: 2.0.0
-    optionalDependencies:
-      pg: 8.11.3
-      sqlite3: 5.1.7
-    transitivePeerDependencies:
-      - supports-color
-
   knex@2.4.2(pg@8.16.3)(sqlite3@5.1.7):
     dependencies:
       colorette: 2.0.19
@@ -4906,18 +4834,18 @@ snapshots:
 
   medusa-interfaces@1.3.7: {}
 
-  medusa-plugin-sanity@2.0.0(@medusajs/types@1.11.17)(@mikro-orm/core@5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7))(@types/node@24.6.0)(ioredis@5.8.0)(medusa-interfaces@1.3.7)(pg-god@1.0.12)(pg@8.11.3)(redis-commands@1.7.0)(redis@3.1.2)(sqlite3@5.1.7):
+  medusa-plugin-sanity@2.0.0(@medusajs/types@1.11.17)(@mikro-orm/core@5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7))(@types/node@24.6.0)(ioredis@5.8.0)(medusa-interfaces@1.3.7)(pg-god@1.0.12)(pg@8.16.3)(redis-commands@1.7.0)(redis@3.1.2)(sqlite3@5.1.7):
     dependencies:
       '@medusajs/cache-inmemory': 1.8.11(@types/node@24.6.0)(sqlite3@5.1.7)
-      '@medusajs/cache-redis': 1.8.0(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7)
-      '@medusajs/event-bus-local': 1.9.9(@types/node@24.6.0)(pg@8.11.3)(sqlite3@5.1.7)
-      '@medusajs/event-bus-redis': 1.8.0(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7)
-      '@medusajs/medusa': 1.8.0(@medusajs/types@1.11.17)(@mikro-orm/core@5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7))(@types/node@24.6.0)(medusa-interfaces@1.3.7)(pg-god@1.0.12)(pg@8.11.3)(redis-commands@1.7.0)(sqlite3@5.1.7)(typeorm@0.3.11(ioredis@5.8.0)(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7))
+      '@medusajs/cache-redis': 1.8.0(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7)
+      '@medusajs/event-bus-local': 1.9.9(@types/node@24.6.0)(pg@8.16.3)(sqlite3@5.1.7)
+      '@medusajs/event-bus-redis': 1.8.0(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7)
+      '@medusajs/medusa': 1.8.0(@medusajs/types@1.11.17)(@mikro-orm/core@5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7))(@types/node@24.6.0)(medusa-interfaces@1.3.7)(pg-god@1.0.12)(pg@8.16.3)(redis-commands@1.7.0)(sqlite3@5.1.7)(typeorm@0.3.11(ioredis@5.8.0)(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7))
       '@sanity/client': 5.4.2
       body-parser: 1.20.3
       cors: 2.8.5
       express: 4.21.2
-      typeorm: 0.3.11(ioredis@5.8.0)(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7)
+      typeorm: 0.3.11(ioredis@5.8.0)(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7)
     transitivePeerDependencies:
       - '@google-cloud/spanner'
       - '@medusajs/types'
@@ -4972,19 +4900,19 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  medusa-test-utils@1.1.45(@medusajs/medusa@1.8.0(@medusajs/types@1.11.17)(@mikro-orm/core@5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7))(@types/node@24.6.0)(medusa-interfaces@1.3.7)(pg-god@1.0.12)(pg@8.11.3)(redis-commands@1.7.0)(sqlite3@5.1.7)(typeorm@0.3.11(ioredis@5.8.0)(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7)))(@medusajs/modules-sdk@1.8.0(ioredis@5.8.0)(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7))(@mikro-orm/core@5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7))(@types/node@24.6.0)(express@4.21.2)(pg-god@1.0.12)(pg@8.11.3)(sqlite3@5.1.7)(typeorm@0.3.11(ioredis@5.8.0)(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7)):
+  medusa-test-utils@1.1.45(@medusajs/medusa@1.8.0(@medusajs/types@1.11.17)(@mikro-orm/core@5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7))(@types/node@24.6.0)(medusa-interfaces@1.3.7)(pg-god@1.0.12)(pg@8.16.3)(redis-commands@1.7.0)(sqlite3@5.1.7)(typeorm@0.3.11(ioredis@5.8.0)(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7)))(@medusajs/modules-sdk@1.8.0(ioredis@5.8.0)(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7))(@mikro-orm/core@5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7))(@types/node@24.6.0)(express@4.21.2)(pg-god@1.0.12)(pg@8.16.3)(sqlite3@5.1.7)(typeorm@0.3.11(ioredis@5.8.0)(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7)):
     dependencies:
-      '@medusajs/modules-sdk': 1.8.0(ioredis@5.8.0)(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7)
-      '@medusajs/utils': 1.11.11(@types/node@24.6.0)(pg@8.11.3)(sqlite3@5.1.7)
-      '@mikro-orm/migrations': 5.9.7(@mikro-orm/core@5.9.7)(@types/node@24.6.0)(pg@8.11.3)(sqlite3@5.1.7)
+      '@medusajs/modules-sdk': 1.8.0(ioredis@5.8.0)(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7)
+      '@medusajs/utils': 1.11.11(@types/node@24.6.0)(pg@8.16.3)(sqlite3@5.1.7)
+      '@mikro-orm/migrations': 5.9.7(@mikro-orm/core@5.9.7)(@types/node@24.6.0)(pg@8.16.3)(sqlite3@5.1.7)
       '@mikro-orm/postgresql': 5.9.7(@mikro-orm/core@5.9.7)(@mikro-orm/migrations@5.9.7)(sqlite3@5.1.7)
       medusa-core-utils: 1.2.3
       randomatic: 3.1.1
     optionalDependencies:
-      '@medusajs/medusa': 1.8.0(@medusajs/types@1.11.17)(@mikro-orm/core@5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7))(@types/node@24.6.0)(medusa-interfaces@1.3.7)(pg-god@1.0.12)(pg@8.11.3)(redis-commands@1.7.0)(sqlite3@5.1.7)(typeorm@0.3.11(ioredis@5.8.0)(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7))
+      '@medusajs/medusa': 1.8.0(@medusajs/types@1.11.17)(@mikro-orm/core@5.9.7(@mikro-orm/migrations@5.9.7)(@mikro-orm/postgresql@5.9.7))(@types/node@24.6.0)(medusa-interfaces@1.3.7)(pg-god@1.0.12)(pg@8.16.3)(redis-commands@1.7.0)(sqlite3@5.1.7)(typeorm@0.3.11(ioredis@5.8.0)(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7))
       express: 4.21.2
       pg-god: 1.0.12
-      typeorm: 0.3.11(ioredis@5.8.0)(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7)
+      typeorm: 0.3.11(ioredis@5.8.0)(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7)
     transitivePeerDependencies:
       - '@mikro-orm/better-sqlite'
       - '@mikro-orm/core'
@@ -5914,7 +5842,7 @@ snapshots:
 
   typedarray@0.0.6: {}
 
-  typeorm@0.3.11(ioredis@5.8.0)(pg@8.11.3)(redis@3.1.2)(sqlite3@5.1.7):
+  typeorm@0.3.11(ioredis@5.8.0)(pg@8.16.3)(redis@3.1.2)(sqlite3@5.1.7):
     dependencies:
       '@sqltools/formatter': 1.2.5
       app-root-path: 3.1.0
@@ -5935,7 +5863,7 @@ snapshots:
       yargs: 17.7.2
     optionalDependencies:
       ioredis: 5.8.0
-      pg: 8.11.3
+      pg: 8.16.3
       redis: 3.1.2
       sqlite3: 5.1.7
     transitivePeerDependencies:

@@ -2,7 +2,6 @@
 
 import { InstantSearch } from "react-instantsearch-hooks-web"
 import { useRouter } from "next/navigation"
-import { MagnifyingGlassMini } from "@medusajs/icons"
 
 import { SEARCH_INDEX_NAME, searchClient } from "@lib/search-client"
 import Hit from "@modules/search/components/hit"
@@ -14,7 +13,7 @@ export default function SearchModal() {
   const router = useRouter()
   const searchRef = useRef(null)
 
-  // close modal on outside click
+  // Close modal on outside click
   const handleOutsideClick = (event: MouseEvent) => {
     if (event.target === searchRef.current) {
       router.back()
@@ -23,14 +22,12 @@ export default function SearchModal() {
 
   useEffect(() => {
     window.addEventListener("click", handleOutsideClick)
-    // cleanup
     return () => {
       window.removeEventListener("click", handleOutsideClick)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // disable scroll on body when modal is open
+  // Disable scroll on body when modal is open
   useEffect(() => {
     document.body.style.overflow = "hidden"
     return () => {
@@ -38,7 +35,7 @@ export default function SearchModal() {
     }
   }, [])
 
-  // on escape key press, close modal
+  // Close modal on ESC key press
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -46,33 +43,80 @@ export default function SearchModal() {
       }
     }
     window.addEventListener("keydown", handleEsc)
-
-    // cleanup
     return () => {
       window.removeEventListener("keydown", handleEsc)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [router])
+
+  const handleClose = () => {
+    router.back()
+  }
 
   return (
     <div className="relative z-[75]">
-      <div className="fixed inset-0 bg-opacity-75 backdrop-blur-md opacity-100 h-screen w-screen" />
-      <div className="fixed inset-0 px-5 sm:p-0" ref={searchRef}>
-        <div className="flex flex-col justify-start w-full h-fit transform p-5 items-center text-left align-middle transition-all max-h-[75vh] bg-transparent shadow-none">
+      {/* Overlay mejorado */}
+      <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity" />
+      
+      {/* Container del modal */}
+      <div className="fixed inset-0 px-4 sm:px-0 flex items-start justify-center pt-16 sm:pt-24" ref={searchRef}>
+        <div className="relative w-full max-w-3xl">
           <InstantSearch
             indexName={SEARCH_INDEX_NAME}
             searchClient={searchClient}
           >
             <div
-              className="flex absolute flex-col h-fit w-full sm:w-fit"
+              className="flex flex-col bg-white rounded-lg shadow-2xl overflow-hidden animate-fadeIn"
               data-testid="search-modal-container"
             >
-              <div className="w-full flex items-center gap-x-2 p-4 bg-[rgba(3,7,18,0.5)] text-ui-fg-on-color backdrop-blur-2xl rounded-rounded">
-                <MagnifyingGlassMini />
-                <SearchBox />
+              {/* Header con barra de búsqueda */}
+              <div className="flex items-center gap-3 p-4 border-b border-gray-200">
+                <svg 
+                  className="w-5 h-5 text-gray-400 flex-shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+                <div className="flex-1">
+                  <SearchBox />
+                </div>
+                <button
+                  onClick={handleClose}
+                  className="flex-shrink-0 p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  aria-label="Cerrar búsqueda"
+                >
+                  <svg 
+                    className="w-5 h-5 text-gray-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
               </div>
-              <div className="flex-1 mt-6">
+
+              {/* Resultados */}
+              <div className="max-h-[60vh] overflow-y-auto">
                 <Hits hitComponent={Hit} />
+              </div>
+
+              {/* Footer con sugerencia (opcional) */}
+              <div className="px-4 py-3 bg-gray-50 border-t border-gray-200 text-center">
+                <p className="text-xs text-gray-500">
+                  Presiona <kbd className="px-2 py-1 bg-white border border-gray-300 rounded text-xs font-semibold">ESC</kbd> para cerrar
+                </p>
               </div>
             </div>
           </InstantSearch>
