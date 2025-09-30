@@ -7,6 +7,7 @@ import {
   COOKIE_SECRET,
   DATABASE_URL,
   JWT_SECRET,
+  PORT,
   REDIS_URL,
   RESEND_API_KEY,
   RESEND_FROM_EMAIL,
@@ -23,11 +24,15 @@ import {
   MINIO_BUCKET,
   MEILISEARCH_HOST,
   MEILISEARCH_ADMIN_KEY,
+  ODOO_URL,
+  ODOO_DB,
+  ODOO_USERNAME,
+  ODOO_API_KEY,
 } from 'lib/constants'
 
 loadEnv(process.env.NODE_ENV, process.cwd())
 
-/** Helpers (sin tipos TS) */
+/** Helpers */
 const ensureHttpUrl = (val) => {
   if (!val) return ''
   const trimmed = String(val).trim()
@@ -35,7 +40,7 @@ const ensureHttpUrl = (val) => {
   return `http://${trimmed}`
 }
 
-// --- Prioriza envs de Railway, luego las de constants ---
+// --- Endpoint S3/MinIO (prioriza env de Railway) ---
 const RAW_PUBLIC_ENDPOINT =
   process.env.MINIO_PUBLIC_ENDPOINT || process.env.MINIO_ENDPOINT || MINIO_ENDPOINT
 
@@ -47,7 +52,7 @@ const SECRET_KEY =
 
 const BUCKET = process.env.MINIO_BUCKET || MINIO_BUCKET
 
-// Normaliza endpoint para evitar virtual-hosted-style
+// Normaliza endpoint para evitar virtual-hosted-style (CN mismatch)
 const RAW_ENDPOINT_CLEAN = RAW_PUBLIC_ENDPOINT ? ensureHttpUrl(RAW_PUBLIC_ENDPOINT) : ''
 const S3_ENDPOINT = (() => {
   if (!RAW_ENDPOINT_CLEAN) return ''
@@ -72,23 +77,40 @@ const medusaConfig = {
     redisUrl: REDIS_URL,
     workerMode: WORKER_MODE,
     http: {
+      port: process.env.MEDUSA_INTERNAL_PORT || PORT, // <-- añadido
       adminCors: ADMIN_CORS,
       authCors: AUTH_CORS,
       storeCors: STORE_CORS,
       jwtSecret: JWT_SECRET,
       cookieSecret: COOKIE_SECRET,
     },
+    // Si no compilas Admin embebido, puedes omitir build.admin
+    // build: { admin: { path: './admin', outDir: './admin/dist' } },
     build: {
-      rollupOptions: {
-        external: ['@medusajs/dashboard'],
-      },
+      rollupOptions: { external: ['@medusajs/dashboard'] },
     },
   },
   admin: {
     backendUrl: BACKEND_URL,
     disable: SHOULD_DISABLE_ADMIN,
+    // outDir: "./admin/dist", // normalmente no hace falta en v2
   },
   modules: [
+    // ===== ODOO (opcional) =====
+    ...(ODOO_URL && ODOO_DB && ODOO_USERNAME && ODOO_API_KEY
+      ? [
+          {
+            resolve: './src/modules/odoo',
+            options: {
+              url: ODOO_URL,
+              dbName: ODOO_DB,
+              username: ODOO_USERNAME,
+              apiKey: ODOO_API_KEY,
+            },
+          },
+        ]
+      : []),
+
     // ===== FILE MODULE (S3 / MinIO con path-style) =====
     {
       key: Modules.FILE,
@@ -100,8 +122,8 @@ const medusaConfig = {
                 resolve: '@medusajs/file-s3',
                 id: 's3',
                 options: {
-                  endpoint: S3_ENDPOINT, // ej: https://bucket-production-23c8.up.railway.app
-                  bucket: BUCKET,        // ej: "medusa-media"
+                  endpoint: S3_ENDPOINT,
+                  bucket: BUCKET,
                   region: process.env.S3_REGION || 'us-west-2',
                   access_key_id: ACCESS_KEY,
                   secret_access_key: SECRET_KEY,
@@ -112,7 +134,7 @@ const medusaConfig = {
               },
             ]
           : [
-              {
+              { // Fallback local
                 resolve: '@medusajs/file-local',
                 id: 'local',
                 options: {
@@ -121,20 +143,6 @@ const medusaConfig = {
                 },
               },
             ],
-      },
-    },
-
-    // ===== SANITY (módulo local) =====
-    {
-      resolve: './src/modules/sanity',
-      options: {
-        project_id: process.env.SANITY_PROJECT_ID,
-        dataset: process.env.SANITY_DATASET || 'production',
-        api_token: process.env.SANITY_API_TOKEN,
-        api_version: process.env.SANITY_API_VERSION || '2024-01-01',
-        type_map: {
-          product: 'product',
-        },
       },
     },
 
@@ -206,7 +214,7 @@ const medusaConfig = {
                   resolve: '@medusajs/payment-stripe',
                   id: 'stripe',
                   options: {
-                    apiKey: STRIPE_API_KEY,          // <-- Debe ser SK (sk_...), no PK
+                    apiKey: STRIPE_API_KEY, // Debe ser sk_...
                     webhookSecret: STRIPE_WEBHOOK_SECRET,
                   },
                 },
@@ -217,8 +225,10 @@ const medusaConfig = {
       : []),
   ],
   plugins: [
+    // Variant Images
     { resolve: 'medusa-variant-images', options: {} },
 
+    // Meilisearch (condicional)
     ...(MEILISEARCH_HOST && MEILISEARCH_ADMIN_KEY
       ? [
           {
@@ -245,7 +255,7 @@ const medusaConfig = {
   ],
 }
 
-// ⚠️ Evita imprimir secretos en producción
+// Evita loggear secretos en prod
 if (process.env.NODE_ENV === 'development') {
   console.log(JSON.stringify(medusaConfig, null, 2))
 }
