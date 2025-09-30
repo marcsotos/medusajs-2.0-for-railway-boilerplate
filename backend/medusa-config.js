@@ -113,30 +113,36 @@ const medusaConfig = {
 
     // ===== FILE MODULE (S3 / MinIO con path-style) =====
     {
-    key: Modules.FILE,
-  resolve: '@medusajs/file',
-  options: {
-    providers: [{
-      resolve: '@medusajs/file-s3',
-      id: 's3',
+      key: Modules.FILE,
+      resolve: '@medusajs/file',
       options: {
-        endpoint: S3_ENDPOINT,              // ej: http://bucket-production-23c8.up.railway.app
-        bucket: BUCKET,                     // "medusa-media"
-        region: process.env.S3_REGION || 'us-west2',
-        access_key_id: ACCESS_KEY,
-        secret_access_key: SECRET_KEY,
-
-        // 👇 Forzar path-style en TODAS las formas posibles
-        forcePathStyle: true,
-        force_path_style: true,
-        s3_force_path_style: true,
-        bucketEndpoint: false,
-        bucket_endpoint: false,
-
-        // 👇 URLs públicas path-style
-        cdn_url: `${S3_ENDPOINT.replace(/\/+$/, '')}/${BUCKET}`,
-      },
-    }],
+        providers: HAS_S3
+          ? [
+              {
+                resolve: '@medusajs/file-s3',
+                id: 's3',
+                options: {
+                  endpoint: S3_ENDPOINT,
+                  bucket: BUCKET,
+                  region: process.env.S3_REGION || 'us-west-2',
+                  access_key_id: ACCESS_KEY,
+                  secret_access_key: SECRET_KEY,
+                  forcePathStyle: true,
+                  force_path_style: true,
+                  cdn_url: `${S3_ENDPOINT.replace(/\/+$/, '')}/${BUCKET}`,
+                },
+              },
+            ]
+          : [
+              { // Fallback local
+                resolve: '@medusajs/file-local',
+                id: 'local',
+                options: {
+                  upload_dir: 'static',
+                  backend_url: `${BACKEND_URL}/static`,
+                },
+              },
+            ],
       },
     },
 
