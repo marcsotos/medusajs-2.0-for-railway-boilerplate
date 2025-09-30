@@ -17,8 +17,8 @@ export const getProductsById = cache(async function ({
       {
         id: ids,
         region_id: regionId,
-        // Requested: keep only metadata and variant inventory
-        fields: "+metadata,+variants.metadata,+variants.inventory_quantity",
+        fields:
+          "*variants.calculated_price,+metadata,+variants.metadata,+variants.inventory_quantity,+variants.options,+images",
       },
       { next: { tags: ["products"] } }
     )
@@ -34,8 +34,8 @@ export const getProductByHandle = cache(async function (
       {
         handle,
         region_id: regionId,
-        // Requested fields
-        fields: "+metadata,+variants.metadata,+variants.inventory_quantity",
+        fields:
+          "*variants.calculated_price,+metadata,+variants.metadata,+variants.inventory_quantity,+variants.options,+images",
       },
       { next: { tags: ["products"] } }
     )
@@ -73,8 +73,8 @@ export const getProductsList = cache(async function ({
         limit,
         offset,
         region_id: region.id,
-        // Requested fields for listings
-        fields: "+metadata,+variants.metadata,+variants.inventory_quantity",
+        fields:
+          "*variants.calculated_price,+metadata,+variants.metadata,+variants.inventory_quantity,+variants.options,+images",
         ...queryParams,
       },
       { next: { tags: ["products"] } }
@@ -93,10 +93,6 @@ export const getProductsList = cache(async function ({
     })
 })
 
-/**
- * This will fetch 100 products to the Next.js cache and sort them based on the sortBy parameter.
- * It will then return the paginated products based on the page and limit parameters.
- */
 export const getProductsListWithSort = cache(async function ({
   page = 0,
   queryParams,
@@ -141,9 +137,6 @@ export const getProductsListWithSort = cache(async function ({
   }
 })
 
-/**
- * Obtiene productos destacados para la página principal
- */
 export const getFeaturedProducts = cache(async function ({
   limit = 8,
   countryCode,
@@ -162,8 +155,8 @@ export const getFeaturedProducts = cache(async function ({
       {
         limit,
         region_id: region.id,
-        fields: "+metadata,+variants.metadata,+variants.inventory_quantity",
-        // Ordenar por fecha de creación descendente para obtener los más recientes
+        fields:
+          "*variants.calculated_price,+metadata,+variants.metadata,+variants.inventory_quantity,+variants.options,+images",
         order: "created_at",
       },
       { next: { tags: ["products", "featured"] } }
@@ -171,9 +164,6 @@ export const getFeaturedProducts = cache(async function ({
     .then(({ products }) => products)
 })
 
-/**
- * Obtiene productos por categoría específica
- */
 export const getProductsByCategory = cache(async function ({
   categoryId,
   limit = 6,
@@ -195,7 +185,8 @@ export const getProductsByCategory = cache(async function ({
         limit,
         region_id: region.id,
         category_id: [categoryId],
-        fields: "+metadata,+variants.metadata,+variants.inventory_quantity",
+        fields:
+          "*variants.calculated_price,+metadata,+variants.metadata,+variants.inventory_quantity,+variants.options,+images",
       },
       { next: { tags: ["products", "category"] } }
     )

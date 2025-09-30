@@ -17,33 +17,35 @@ const ProductTabs = ({ product }: ProductTabsProps) => {
 
   const tabs = [
     {
-      label: "Product Information",
+      label: "Detalles de producto",
       component: <ProductInfoTab product={product} />,
     },
     // 👇 añadimos solo si existen ingredientes
     ...(ingredients
       ? [
           {
-            label: "Ingredients",
+            label: "Ingredientes",
             component: <IngredientsTab ingredients={ingredients} />,
           },
         ]
       : []),
     {
-      label: "Shipping & Returns",
+      label: "Envío y devoluciones",
       component: <ShippingInfoTab />,
     },
   ]
 
   return (
-    <div className="w-full">
-      <Accordion type="multiple">
+    <div className="w-full border-t border-gray-200 pt-8">
+      <h2 className="text-xl font-semibold text-gray-900 mb-6">Detalles de producto</h2>
+      <Accordion type="multiple" defaultValue={["Detalles de producto"]}>
         {tabs.map((tab, i) => (
           <Accordion.Item
             key={i}
             title={tab.label}
             headingSize="medium"
             value={tab.label}
+            className="border-b border-gray-200 last:border-b-0"
           >
             {tab.component}
           </Accordion.Item>
@@ -55,36 +57,49 @@ const ProductTabs = ({ product }: ProductTabsProps) => {
 
 const ProductInfoTab = ({ product }: ProductTabsProps) => {
   return (
-    <div className="text-small-regular py-8">
-      <div className="grid grid-cols-2 gap-x-8">
-        <div className="flex flex-col gap-y-4">
+    <div className="py-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-4">
           <div>
-            <span className="font-semibold">Material</span>
-            <p>{product.material ? product.material : "-"}</p>
-          </div>
-          <div>
-            <span className="font-semibold">Country of origin</span>
-            <p>{product.origin_country ? product.origin_country : "-"}</p>
-          </div>
-          <div>
-            <span className="font-semibold">Type</span>
-            <p>{product.type ? product.type.value : "-"}</p>
-          </div>
-        </div>
-        <div className="flex flex-col gap-y-4">
-          <div>
-            <span className="font-semibold">Weight</span>
-            <p>{product.weight ? `${product.weight} g` : "-"}</p>
-          </div>
-          <div>
-            <span className="font-semibold">Dimensions</span>
-            <p>
-              {product.length && product.width && product.height
-                ? `${product.length}L x ${product.width}W x ${product.height}H`
-                : "-"}
+            <span className="font-semibold text-gray-900">Descripción</span>
+            <p className="text-gray-600 mt-1">
+              {product.description || "Enjuague bucal para encías delicadas con acción antiséptica y protectora."}
             </p>
           </div>
+          <div>
+            <span className="font-semibold text-gray-900">Marca</span>
+            <p className="text-gray-600 mt-1">{product.collection?.title || "Lacer"}</p>
+          </div>
+          <div>
+            <span className="font-semibold text-gray-900">Formato</span>
+            <p className="text-gray-600 mt-1">Botella - 1 litro</p>
+          </div>
         </div>
+        <div className="space-y-4">
+          <div>
+            <span className="font-semibold text-gray-900">Peso</span>
+            <p className="text-gray-600 mt-1">{product.weight ? `${product.weight} g` : "1000 ml"}</p>
+          </div>
+          <div>
+            <span className="font-semibold text-gray-900">País de origen</span>
+            <p className="text-gray-600 mt-1">{product.origin_country || "España"}</p>
+          </div>
+          <div>
+            <span className="font-semibold text-gray-900">Uso recomendado</span>
+            <p className="text-gray-600 mt-1">Uso diario después del cepillado</p>
+          </div>
+        </div>
+      </div>
+      
+      {/* Información adicional específica para farmacia */}
+      <div className="mt-6 pt-6 border-t border-gray-200">
+        <h4 className="font-semibold text-gray-900 mb-3">Información importante</h4>
+        <ul className="space-y-2 text-sm text-gray-600">
+          <li>• Mantener fuera del alcance de los niños</li>
+          <li>• No ingerir</li>
+          <li>• En caso de irritación, suspender su uso</li>
+          <li>• Conservar en lugar fresco y seco</li>
+        </ul>
       </div>
     </div>
   )
@@ -101,36 +116,38 @@ const IngredientsTab = ({ ingredients }: { ingredients: string }) => {
 
 const ShippingInfoTab = () => {
   return (
-    <div className="text-small-regular py-8">
-      <div className="grid grid-cols-1 gap-y-8">
-        <div className="flex items-start gap-x-2">
-          <FastDelivery />
+    <div className="py-6">
+      <div className="grid grid-cols-1 gap-6">
+        <div className="flex items-start gap-4">
+          <div className="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0">
+            <FastDelivery />
+          </div>
           <div>
-            <span className="font-semibold">Fast delivery</span>
-            <p className="max-w-sm">
-              Your package will arrive in 3-5 business days at your pick up
-              location or in the comfort of your home.
+            <span className="font-semibold text-gray-900">Envío rápido</span>
+            <p className="text-gray-600 mt-1">
+              Recibe tu pedido en 24-48 horas laborables. Envío gratis a partir de 49€.
             </p>
           </div>
         </div>
-        <div className="flex items-start gap-x-2">
-          <Refresh />
+        <div className="flex items-start gap-4">
+          <div className="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0">
+            <Refresh />
+          </div>
           <div>
-            <span className="font-semibold">Simple exchanges</span>
-            <p className="max-w-sm">
-              Is the fit not quite right? No worries - we&apos;ll exchange your
-              product for a new one.
+            <span className="font-semibold text-gray-900">Devoluciones fáciles</span>
+            <p className="text-gray-600 mt-1">
+              Tienes 30 días para devolver tu producto. Proceso simple y sin complicaciones.
             </p>
           </div>
         </div>
-        <div className="flex items-start gap-x-2">
-          <Back />
+        <div className="flex items-start gap-4">
+          <div className="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0">
+            <Back />
+          </div>
           <div>
-            <span className="font-semibold">Easy returns</span>
-            <p className="max-w-sm">
-              Just return your product and we&apos;ll refund your money. No
-              questions asked – we&apos;ll do our best to make sure your return
-              is hassle-free.
+            <span className="font-semibold text-gray-900">Atención farmacéutica</span>
+            <p className="text-gray-600 mt-1">
+              Consulta con nuestros farmacéuticos cualquier duda sobre el producto.
             </p>
           </div>
         </div>

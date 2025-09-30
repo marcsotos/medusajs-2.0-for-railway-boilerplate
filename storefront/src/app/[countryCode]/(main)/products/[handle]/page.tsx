@@ -78,6 +78,16 @@ export default async function ProductPage({ params }: Props) {
   if (!pricedProduct) {
     notFound()
   }
+// 🔍 DEBUG TEMPORAL - Eliminar después
+  console.log('=== PAGE.TSX DEBUG ===')
+  console.log('Product handle:', params.handle)
+  console.log('Product ID:', pricedProduct.id)
+  console.log('Product title:', pricedProduct.title)
+  console.log('Product images:', pricedProduct.images)
+  console.log('Images length:', pricedProduct.images?.length)
+  console.log('Product thumbnail:', pricedProduct.thumbnail)
+  console.log('Full product keys:', Object.keys(pricedProduct))
+  console.log('=====================')
 
   return (
     <ProductTemplate

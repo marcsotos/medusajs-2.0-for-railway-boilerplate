@@ -29,16 +29,23 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
         data-testid={dataTestId}
       >
         {filteredOptions?.map((v) => {
+          const isSelected = v === current
+          
           return (
             <button
-              onClick={() => updateOption(option.title ?? "", v ?? "")}
+              type="button"
+              onClick={() => {
+                if (!disabled) {
+                  updateOption(option.title ?? "", v ?? "")
+                }
+              }}
               key={v}
               className={clx(
-                "border-ui-border-base bg-ui-bg-subtle border text-small-regular h-10 rounded-rounded p-2 flex-1 ",
+                "border-ui-border-base bg-ui-bg-subtle border text-small-regular h-10 rounded-rounded p-2 flex-1 cursor-pointer",
                 {
-                  "border-ui-border-interactive": v === current,
+                  "border-ui-border-interactive bg-ui-bg-base border-2": isSelected,
                   "hover:shadow-elevation-card-rest transition-shadow ease-in-out duration-150":
-                    v !== current,
+                    !isSelected && !disabled,
                 }
               )}
               disabled={disabled}

@@ -2,22 +2,123 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-/* Variables de color personalizadas */
+/* Variables de color estilo Atida */
 :root {
-  --primary-dark: #2d3748;
-  --primary-light: #4a5568;
-  --accent-yellow: #ffeb3b;
-  --accent-green: #2e7d32;
-  --accent-blue: #1565c0;
-  --accent-orange: #e65100;
-  --bg-cream: #fef5e7;
-  --bg-light: #fff9e6;
+  /* Colores principales */
+  --atida  /* Cards de producto estilo Atida */
+  .product-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-light);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .product-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+    border-color: var(--atida-primary-light);
+  }
+
+  .promo-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid var(--border-light);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .promo-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+  }
+
+  /* Badge de descuento estilo Atida */
+  .discount-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 4px;
+    background: var(--accent-orange);
+    color: white;
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 10;
+  }
+
+  .discount-badge::before {
+    content: '-';
+  }
+
+  .discount-badge::after {
+    content: '%';
+  } /* Verde azulado principal de Atida */
+  --atida-primary-dark: #008a94;
+  --atida-primary-light: #33b3bd;
+  --atida-secondary: #f8f9fa;
+  
+  /* Grises neutros */
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  
+  /* Colores de acento */
+  --accent-orange: #ff6b35; /* Naranja para descuentos */
+  --accent-red: #ef4444; /* Rojo para errores */
+  --accent-green: #10b981; /* Verde para éxito */
+  --accent-blue: #3b82f6; /* Azul para información */
+  --accent-yellow: #f59e0b; /* Amarillo para advertencias */
+  
+  /* Fondos */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #f1f5f9;
+  --bg-accent: #e6f7f8; /* Fondo suave verde-azul */
+  
+  /* Bordes */
+  --border-light: #e5e7eb;
+  --border-medium: #d1d5db;
+  --border-dark: #9ca3af;
+  
+  /* Sombras */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 
 @layer utilities {
   /* Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
+  }
+
+  /* Text clamp utilities */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .no-scrollbar::-webkit-scrollbar-track {
@@ -116,17 +217,59 @@
     @apply px-4 py-2 border border-black rounded-full hover:bg-black hover:text-white transition-colors duration-200 ease-in;
   }
 
-  /* Botones personalizados estilo Atida */
+  /* Botones estilo Atida */
   .btn-primary {
-    @apply bg-[#2d3748] hover:bg-[#1a202c] text-white px-6 py-3 rounded-md font-medium transition-all duration-200 shadow-md hover:shadow-lg;
+    background: var(--atida-primary);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .btn-primary:hover {
+    background: var(--atida-primary-dark);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
   }
 
   .btn-secondary {
-    @apply bg-white hover:bg-gray-50 text-[#2d3748] border-2 border-[#2d3748] px-6 py-3 rounded-md font-medium transition-all duration-200;
+    background: white;
+    color: var(--atida-primary);
+    border: 2px solid var(--atida-primary);
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  .btn-secondary:hover {
+    background: var(--atida-primary);
+    color: white;
   }
 
   .btn-outline {
-    @apply border-2 border-current px-6 py-2 rounded-md font-medium hover:bg-current hover:text-white transition-colors duration-200;
+    background: transparent;
+    border: 2px solid var(--gray-300);
+    color: var(--gray-700);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--atida-primary);
+    color: var(--atida-primary);
+    background: var(--bg-accent);
   }
 
   /* Cards de producto */
@@ -218,49 +361,322 @@
     @apply hover:text-[#2d3748] transition-colors duration-200;
   }
 
-  /* Input styles mejorados */
+  /* Input styles estilo Atida */
   .input-field {
-    @apply w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2d3748] focus:border-transparent transition-all duration-200;
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--border-light);
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    background: white;
+    color: var(--gray-800);
   }
 
-  /* Spinner loader */
-  .spinner {
-    @apply inline-block w-6 h-6 border-4 border-gray-200 border-t-[#2d3748] rounded-full animate-spin;
+  .input-field:focus {
+    outline: none;
+    border-color: var(--atida-primary);
+    box-shadow: 0 0 0 3px rgba(0, 160, 172, 0.1);
   }
 
-  /* Grid layouts comunes */
-  .grid-products {
-    @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6;
+  .input-field:invalid {
+    border-color: var(--accent-red);
   }
 
-  .grid-promo {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4;
+  .input-field::placeholder {
+    color: var(--gray-400);
   }
 
-  /* Container para secciones */
-  .section-container {
-    @apply py-12 md:py-16 lg:py-20;
+  /* Search input estilo Atida */
+  .search-input {
+    width: 100%;
+    padding: 12px 20px 12px 48px;
+    border: 2px solid var(--border-light);
+    border-radius: 24px;
+    font-size: 14px;
+    background: white;
+    transition: all 0.2s ease;
   }
 
-  /* Banner promocional */
+  .search-input:focus {
+    outline: none;
+    border-color: var(--atida-primary);
+    box-shadow: var(--shadow-md);
+  }
+
+  /* Estilos de precio estilo Atida */
+  .price-current {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gray-900);
+  }
+
+  .price-original {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gray-500);
+    text-decoration: line-through;
+    margin-left: 8px;
+  }
+
+  .price-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0;
+  }
+
+  /* Badge de stock */
+  .stock-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .stock-badge.available {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--accent-green);
+  }
+
+  .stock-badge.low {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--accent-yellow);
+  }
+
+  .stock-badge.out {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--accent-red);
+  }
+
+  /* Rating stars estilo Atida */
+  .rating-stars {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin: 4px 0;
+  }
+
+  .rating-stars .star {
+    width: 14px;
+    height: 14px;
+    color: #fbbf24;
+  }
+
+  .rating-count {
+    font-size: 12px;
+    color: var(--gray-500);
+    margin-left: 8px;
+  }
+
+  /* Selector de cantidad estilo Atida */
+  .quantity-selector {
+    display: flex;
+    align-items: center;
+    border: 2px solid var(--border-light);
+    border-radius: 8px;
+    background: white;
+    overflow: hidden;
+  }
+
+  .quantity-btn {
+    background: transparent;
+    border: none;
+    padding: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--gray-600);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+  }
+
+  .quantity-btn:hover {
+    background: var(--bg-secondary);
+    color: var(--atida-primary);
+  }
+
+  .quantity-btn:disabled {
+    color: var(--gray-300);
+    cursor: not-allowed;
+  }
+
+  .quantity-input {
+    border: none;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 8px;
+    min-width: 50px;
+    background: transparent;
+  }
+
+  .quantity-input:focus {
+    outline: none;
+  }
+
+  /* Botón añadir al carrito estilo Atida */
+  .add-to-cart-btn {
+    background: var(--atida-primary);
+    color: white;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 48px;
+    width: 100%;
+  }
+
+  .add-to-cart-btn:hover {
+    background: var(--atida-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .add-to-cart-btn:disabled {
+    background: var(--gray-300);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .add-to-cart-btn .icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Breadcrumbs estilo Atida */
+  .breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--gray-600);
+    padding: 16px 0;
+  }
+
+  .breadcrumb-item {
+    color: var(--gray-500);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .breadcrumb-item:hover {
+    color: var(--atida-primary);
+  }
+
+  .breadcrumb-item.active {
+    color: var(--gray-900);
+    font-weight: 500;
+  }
+
+  .breadcrumb-separator {
+    color: var(--gray-400);
+    margin: 0 4px;
+  }
+
+  /* Header de categorías estilo Atida */
+  .category-nav {
+    background: white;
+    border-bottom: 1px solid var(--border-light);
+    padding: 0;
+  }
+
+  .category-item {
+    padding: 16px 20px;
+    color: var(--gray-700);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+
+  .category-item:hover {
+    background: var(--bg-accent);
+    color: var(--atida-primary);
+  }
+
+  .category-item.active {
+    background: var(--atida-primary);
+    color: white;
+  }
+
+  /* Promociones destacadas */
   .promo-banner {
-    @apply w-full bg-[#1a1f3a] text-white text-center py-2 text-sm font-medium;
+    background: linear-gradient(135deg, var(--atida-primary) 0%, var(--atida-primary-dark) 100%);
+    color: white;
+    text-align: center;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: 600;
   }
 
-  /* Navegación mejorada */
+  .promo-highlight {
+    background: rgba(255, 107, 53, 0.1);
+    border: 1px solid var(--accent-orange);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px 0;
+  }
+
+  .promo-highlight h3 {
+    color: var(--accent-orange);
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .promo-highlight p {
+    color: var(--gray-700);
+    font-size: 14px;
+    margin: 0;
+  }
+
+  /* Navegación estilo Atida */
   .nav-link {
-    @apply relative px-4 py-2 rounded-full transition-all duration-300 font-medium;
+    position: relative;
+    padding: 12px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--gray-700);
+    text-decoration: none;
+  }
+
+  .nav-link:hover {
+    background: var(--bg-accent);
+    color: var(--atida-primary);
+  }
+
+  .nav-link.active {
+    background: var(--atida-primary);
+    color: white;
   }
 
   .nav-link::after {
     content: '';
     position: absolute;
-    bottom: 0;
+    bottom: -2px;
     left: 50%;
     transform: translateX(-50%);
     width: 0;
     height: 2px;
-    background: linear-gradient(90deg, #2d3748, #4a5568);
+    background: var(--atida-primary);
     transition: width 0.3s ease;
   }
 
@@ -268,13 +684,63 @@
     width: 80%;
   }
 
-  /* Efectos de hover mejorados */
-  .nav-item-hover {
-    @apply transition-all duration-300 ease-in-out;
+  /* Grid layouts responsive estilo Atida */
+  .grid-products {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
   }
 
-  .nav-item-hover:hover {
-    @apply transform scale-105 shadow-lg;
+  @media (min-width: 768px) {
+    .grid-products {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .grid-products {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+  }
+
+  .grid-promo {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  @media (min-width: 768px) {
+    .grid-promo {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .grid-promo {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* Container principal */
+  .content-container {
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  @media (min-width: 640px) {
+    .content-container {
+      padding: 0 24px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .content-container {
+      padding: 0 32px;
+    }
   }
 
   /* Animaciones de entrada */
@@ -300,24 +766,158 @@
     border: 1px solid rgba(255, 255, 255, 0.2);
   }
 
-  /* Botones de navegación mejorados */
-  .nav-button {
-    @apply px-4 py-2 rounded-full transition-all duration-300 font-medium relative overflow-hidden;
+  /* Loading spinner estilo Atida */
+  .spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--gray-200);
+    border-top: 2px solid var(--atida-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
   }
 
-  .nav-button::before {
+  .spinner-lg {
+    width: 32px;
+    height: 32px;
+    border-width: 3px;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Loading overlay */
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+
+  /* Estados de carga en botones */
+  .btn-loading {
+    position: relative;
+    color: transparent;
+  }
+
+  .btn-loading::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
   }
 
-  .nav-button:hover::before {
-    left: 100%;
+  /* Utilidades de texto */
+  .text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Separadores */
+  .divider {
+    height: 1px;
+    background: var(--border-light);
+    margin: 24px 0;
+  }
+
+  .divider-vertical {
+    width: 1px;
+    background: var(--border-light);
+    margin: 0 16px;
+  }
+
+  /* Cards especiales */
+  .info-card {
+    background: var(--bg-accent);
+    border: 1px solid rgba(0, 160, 172, 0.2);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 16px 0;
+  }
+
+  .info-card h4 {
+    color: var(--atida-primary);
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .info-card p {
+    color: var(--gray-700);
+    font-size: 14px;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* Iconos */
+  .icon {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+  }
+
+  .icon-sm {
+    width: 16px;
+    height: 16px;
+  }
+
+  .icon-lg {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Pills/Tags */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    background: var(--bg-secondary);
+    color: var(--gray-700);
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .pill.primary {
+    background: rgba(0, 160, 172, 0.1);
+    color: var(--atida-primary);
+  }
+
+  /* Márgenes y padding responsivos */
+  .section-spacing {
+    padding: 48px 0;
+  }
+
+  @media (min-width: 768px) {
+    .section-spacing {
+      padding: 64px 0;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .section-spacing {
+      padding: 80px 0;
+    }
   }
 }
 

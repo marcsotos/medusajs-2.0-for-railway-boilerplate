@@ -68,6 +68,12 @@ const medusaConfig = {
         ]
       : []),
 
+    // Collection Hierarchy Module
+    {
+      resolve: './src/modules/collection-hierarchy',
+      key: 'collectionHierarchy',
+    },
+
     // ✅ STORAGE SOLO LOCAL
     {
       key: Modules.FILE,

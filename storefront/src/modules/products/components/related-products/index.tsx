@@ -23,7 +23,7 @@ export default async function RelatedProducts({
   const region = await getRegion(countryCode)
 
   if (!region) {
-  const queryParams: StoreProductParamsWithTags = {}
+    return null
   }
 
   // edit this function to define your related products logic
@@ -31,16 +31,8 @@ export default async function RelatedProducts({
   if (region?.id) {
     queryParams.region_id = region.id
   }
-  if (product.collection_id) {
-    queryParams.collection_id = [product.collection_id]
-  }
-  const productWithTags = product as StoreProductWithTags
-  if (productWithTags.tags) {
-    queryParams.tags = productWithTags.tags
-      .map((t) => t.value)
-      .filter(Boolean) as string[]
-  }
-  queryParams.is_giftcard = false
+  // Simplified related products logic
+  queryParams.limit = 4
 
   const products = await getProductsList({
     queryParams,

@@ -11,7 +11,6 @@ import OptionSelect from "@modules/products/components/product-actions/option-se
 import { VariantGallery } from "@modules/products/components/variant-gallery"
 
 import MobileActions from "./mobile-actions"
-import ProductPrice from "../product-price"
 import { addToCart } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
 
@@ -19,12 +18,17 @@ type ProductActionsProps = {
   product: HttpTypes.StoreProduct
   region: HttpTypes.StoreRegion
   disabled?: boolean
+  onVariantChange?: (variant: HttpTypes.StoreProductVariant) => void
 }
 
+// Map variant options to a keymap by option title => value (simpler approach)
 const optionsAsKeymap = (variantOptions: any) => {
-  return variantOptions?.reduce((acc: Record<string, string | undefined>, varopt: any) => {
-    if (varopt.option && varopt.value !== null && varopt.value !== undefined) {
-      acc[varopt.option.title] = varopt.value
+  const list = Array.isArray(variantOptions) ? variantOptions : []
+  return list.reduce((acc: Record<string, string | undefined>, varopt: any) => {
+    const key = varopt?.option?.title || varopt?.option_title
+    const value = varopt?.value
+    if (key && (value ?? null) !== null && value !== undefined) {
+      acc[String(key)] = String(value)
     }
     return acc
   }, {})
@@ -34,16 +38,30 @@ export default function ProductActions({
   product,
   region,
   disabled,
+  onVariantChange,
 }: ProductActionsProps) {
   const [options, setOptions] = useState<Record<string, string | undefined>>({})
   const [isAdding, setIsAdding] = useState(false)
+  const [quantity, setQuantity] = useState(1)
   const countryCode = useParams().countryCode as string
 
-  // If there is only 1 variant, preselect the options
+  // If there is only 1 variant, preselect the options (or none)
   useEffect(() => {
     if (product.variants?.length === 1) {
       const variantOptions = optionsAsKeymap(product.variants[0].options)
-      setOptions(variantOptions ?? {})
+      setOptions(variantOptions)
+      return
+    }
+
+    // If there are multiple variants and no options selected yet, preselect a valid variant
+    if ((product.variants?.length || 0) > 1 && Object.keys(options).length === 0) {
+      const preferred =
+        product.variants?.find((v) =>
+          (!v.manage_inventory || v.allow_backorder || (v.inventory_quantity || 0) > 0)
+        ) || product.variants?.[0]
+
+      const variantOptions = optionsAsKeymap(preferred?.options)
+      setOptions(variantOptions)
     }
   }, [product.variants])
 
@@ -52,13 +70,41 @@ export default function ProductActions({
       return
     }
 
-    return product.variants.find((v) => {
+    // Fallback: if there's exactly one variant and no product options, use it
+    if (product.variants.length === 1 && (product.options?.length ?? 0) === 0) {
+      return product.variants[0]
+    }
+
+    const variant = product.variants.find((v) => {
       const variantOptions = optionsAsKeymap(v.options)
       return isEqual(variantOptions, options)
     })
-  }, [product.variants, options])
 
-  // update the options when a variant is selected
+    return variant
+  }, [product.variants, product.options, options])
+
+  // Notify parent about selected variant changes
+  useEffect(() => {
+    if (selectedVariant && onVariantChange) {
+      onVariantChange(selectedVariant)
+    }
+  }, [selectedVariant, onVariantChange])
+
+  // Initial notify on mount
+  useEffect(() => {
+    if (product.variants && product.variants.length > 0 && onVariantChange) {
+      if (selectedVariant) {
+        onVariantChange(selectedVariant)
+      } else if (product.variants.length === 1) {
+        onVariantChange(product.variants[0])
+      } else {
+        onVariantChange(product.variants[0])
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // update the options when a variant option is selected
   const setOptionValue = (title: string, value: string) => {
     setOptions((prev) => ({
       ...prev,
@@ -68,33 +114,24 @@ export default function ProductActions({
 
   // check if the selected variant is in stock
   const inStock = useMemo(() => {
-    // If we don't manage inventory, we can always add to cart
     if (selectedVariant && !selectedVariant.manage_inventory) {
       return true
     }
-
-    // If we allow back orders on the variant, we can add to cart
     if (selectedVariant?.allow_backorder) {
       return true
     }
-
-    // If there is inventory available, we can add to cart
     if (
       selectedVariant?.manage_inventory &&
       (selectedVariant?.inventory_quantity || 0) > 0
     ) {
       return true
     }
-
-    // Otherwise, we can't add to cart
     return false
   }, [selectedVariant])
 
   const actionsRef = useRef<HTMLDivElement>(null)
-
   const inView = useIntersection(actionsRef, "0px")
 
-  // add the selected variant to the cart
   const handleAddToCart = async () => {
     if (!selectedVariant?.id) return null
 
@@ -102,11 +139,18 @@ export default function ProductActions({
 
     await addToCart({
       variantId: selectedVariant.id,
-      quantity: 1,
+      quantity: quantity, // Usar la cantidad seleccionada
       countryCode,
     })
 
     setIsAdding(false)
+  }
+
+  // Funciones para manejar la cantidad
+  const handleQuantityChange = (newQuantity: number) => {
+    if (newQuantity >= 1) {
+      setQuantity(newQuantity)
+    }
   }
 
   return (
@@ -139,21 +183,61 @@ export default function ProductActions({
           <VariantGallery variant={selectedVariant as any} />
         ) : null}
 
-        <ProductPrice product={product} variant={selectedVariant} />
+        {/* Selector de cantidad */}
+        <div className="flex items-center gap-4 mb-4">
+          <span className="text-sm font-medium text-gray-700">Cantidad:</span>
+          <div className="flex items-center border border-gray-300 rounded-lg">
+            <button
+              onClick={() => handleQuantityChange(quantity - 1)}
+              className="p-3 hover:bg-gray-50 transition-colors"
+              disabled={quantity <= 1 || disabled || isAdding}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+              </svg>
+            </button>
+            
+            <input
+              type="number"
+              value={quantity}
+              onChange={(e) => handleQuantityChange(parseInt(e.target.value) || 1)}
+              className="w-16 text-center border-none outline-none"
+              min="1"
+              disabled={disabled || isAdding}
+            />
+            
+            <button
+              onClick={() => handleQuantityChange(quantity + 1)}
+              className="p-3 hover:bg-gray-50 transition-colors"
+              disabled={disabled || isAdding}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+            </button>
+          </div>
+        </div>
 
         <Button
           onClick={handleAddToCart}
           disabled={!inStock || !selectedVariant || !!disabled || isAdding}
           variant="primary"
-          className="w-full h-10"
+          className="w-full h-12 bg-teal-600 hover:bg-teal-700 text-white font-medium rounded-lg flex items-center justify-center gap-2"
           isLoading={isAdding}
           data-testid="add-product-button"
         >
-          {!selectedVariant
-            ? "Select variant"
-            : !inStock
-            ? "Out of stock"
-            : "Add to cart"}
+          {!selectedVariant ? (
+            "Seleccionar variante"
+          ) : !inStock ? (
+            "Sin stock"
+          ) : (
+            <>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+              </svg>
+              Añadir al carrito
+            </>
+          )}
         </Button>
         <MobileActions
           product={product}

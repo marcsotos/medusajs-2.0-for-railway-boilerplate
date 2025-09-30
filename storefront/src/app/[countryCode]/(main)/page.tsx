@@ -5,11 +5,9 @@ import Image from "next/image"
 import FeaturedProducts from "@modules/home/components/featured-products"
 import Hero from "@modules/home/components/hero"
 import { ProductGrid } from "@modules/home/components/product-grid"
+import PromoBanner from "@modules/home/components/banner-promocional"
 import { getCollectionsWithProducts } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
-
-// 👇 Sanity helpers (ruta relativa desde src/app/[countryCode]/(main)/page.tsx)
-// import { sanity, urlFor } from "../../../lib/sanity"
 
 export const metadata: Metadata = {
   title: "Mono Banano - Productos Naturales y Saludables",
@@ -17,7 +15,6 @@ export const metadata: Metadata = {
     "Descubre nuestra selección de productos orgánicos y naturales para tu bienestar. Envío gratis en pedidos superiores a 50€.",
 }
 
-// ✅ ISR: revalida esta página cada 60s
 export const revalidate = 60
 
 type SanityCard = {
@@ -38,25 +35,7 @@ export default async function Home({
 
   if (!collections || !region) return null
 
-  // 👉 Traer algunos productos desde Sanity para portada (opcional) - Temporalmente deshabilitado
   let sanityProducts: SanityCard[] = []
-  // try {
-  //   sanityProducts = await sanity.fetch(
-  //     `*[_type == "product"] | order(_updatedAt desc)[0..7]{
-  //       _id,
-  //       title,
-  //       medusaId,
-  //       "slug": handle.current,
-  //       images[]{ asset->, alt }
-  //     }`,
-  //     {},
-  //     // 🧠 Juega bien con el caché de Next (ISR)
-  //     { next: { revalidate: 60 } }
-  //   )
-  // } catch {
-  //   // Silenciamos error para no romper la home si Sanity falla
-  //   sanityProducts = []
-  // }
 
   return (
     <>
@@ -98,7 +77,7 @@ export default async function Home({
 
                 const imgUrl = first?.asset
                   ? urlFor(first).width(600).height(600).fit("crop").url()
-                  : "/placeholder.png" // Asegúrate de tener este asset en /public
+                  : "/placeholder.png"
 
                 return (
                   <Link
@@ -134,41 +113,8 @@ export default async function Home({
         </section>
       )}
 
-      {/* Banner Promocional Adicional (Opcional) */}
-      <div className="bg-gradient-to-r from-[#fef5e7] to-[#fff9e6] py-12">
-        <div className="content-container text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-[#2d3748] mb-4">
-            ¿Por qué elegir Mono Banano?
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
-            <div className="flex flex-col items-center">
-              <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-md mb-4">
-                <span className="text-3xl">🌱</span>
-              </div>
-              <h3 className="font-semibold text-lg text-[#2d3748] mb-2">100% Natural</h3>
-              <p className="text-sm text-gray-600">
-                Productos orgánicos sin químicos ni aditivos artificiales
-              </p>
-            </div>
-
-            <div className="flex flex-col items-center">
-              <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-md mb-4">
-                <span className="text-3xl">🚚</span>
-              </div>
-              <h3 className="font-semibold text-lg text-[#2d3748] mb-2">Envío Gratis</h3>
-              <p className="text-sm text-gray-600">En pedidos superiores a 50€ a toda España</p>
-            </div>
-
-            <div className="flex flex-col items-center">
-              <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-md mb-4">
-                <span className="text-3xl">⭐</span>
-              </div>
-              <h3 className="font-semibold text-lg text-[#2d3748] mb-2">Calidad Garantizada</h3>
-              <p className="text-sm text-gray-600">Miles de clientes satisfechos nos respaldan</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Banner Promocional - Usando componente optimizado */}
+      <PromoBanner />
     </>
   )
 }
