@@ -1,4 +1,4 @@
-import { loadEnv, Modules, defineConfig } from '@medusajs/utils';
+import { loadEnv, Modules, defineConfig } from '@medusajs/utils'
 import {
   ADMIN_CORS,
   AUTH_CORS,
@@ -23,48 +23,51 @@ import {
   MINIO_BUCKET,
   MEILISEARCH_HOST,
   MEILISEARCH_ADMIN_KEY,
-} from 'lib/constants';
+} from 'lib/constants'
 
-loadEnv(process.env.NODE_ENV, process.cwd());
+loadEnv(process.env.NODE_ENV, process.cwd())
 
 /** Helpers */
-const ensureHttpsUrl = (val) => {
-  if (!val) return '';
-  const clean = String(val).trim().replace(/^https?:\/\//, '');
-  return `https://${clean}`;
-};
+const ensureHttpUrl = (val: string | undefined | null) => {
+  if (!val) return ''
+  const trimmed = String(val).trim()
+  // Respeta http/https si ya viene definido
+  if (/^https?:\/\//i.test(trimmed)) return trimmed
+  // Por defecto usa http para evitar CN mismatch si el cert no cubre subdominios
+  return `http://${trimmed}`
+}
 
 // --- Tomamos primero las vars “nuevas” de Railway si existen, si no las de constants ---
 const RAW_PUBLIC_ENDPOINT =
-  process.env.MINIO_PUBLIC_ENDPOINT || process.env.MINIO_ENDPOINT || MINIO_ENDPOINT;
+  process.env.MINIO_PUBLIC_ENDPOINT || process.env.MINIO_ENDPOINT || MINIO_ENDPOINT
 
 const ACCESS_KEY =
-  process.env.MINIO_ACCESS_KEY || process.env.MINIO_ROOT_USER || MINIO_ACCESS_KEY;
+  process.env.MINIO_ACCESS_KEY || process.env.MINIO_ROOT_USER || MINIO_ACCESS_KEY
 
 const SECRET_KEY =
-  process.env.MINIO_SECRET_KEY || process.env.MINIO_ROOT_PASSWORD || MINIO_SECRET_KEY;
+  process.env.MINIO_SECRET_KEY || process.env.MINIO_ROOT_PASSWORD || MINIO_SECRET_KEY
 
-const BUCKET = process.env.MINIO_BUCKET || MINIO_BUCKET; // <- asegúrate de setearla en Railway
+const BUCKET = process.env.MINIO_BUCKET || MINIO_BUCKET // <- asegúrate de setearla en Railway
 
 // Normalizamos endpoint para EVITAR virtual-hosted-style con el bucket como subdominio
 // e.g. medusa-media.bucket-xxxx.up.railway.app -> bucket-xxxx.up.railway.app
-const RAW_ENDPOINT_CLEAN = RAW_PUBLIC_ENDPOINT ? ensureHttpsUrl(RAW_PUBLIC_ENDPOINT) : '';
+const RAW_ENDPOINT_CLEAN = RAW_PUBLIC_ENDPOINT ? ensureHttpUrl(RAW_PUBLIC_ENDPOINT) : ''
 const S3_ENDPOINT = (() => {
-  if (!RAW_ENDPOINT_CLEAN) return '';
+  if (!RAW_ENDPOINT_CLEAN) return ''
   try {
-    const u = new URL(RAW_ENDPOINT_CLEAN);
-    const bucketPrefix = `${BUCKET}.`;
+    const u = new URL(RAW_ENDPOINT_CLEAN)
+    const bucketPrefix = `${BUCKET}.`
     if (u.hostname.startsWith(bucketPrefix)) {
-      u.hostname = u.hostname.slice(bucketPrefix.length);
+      u.hostname = u.hostname.slice(bucketPrefix.length)
     }
-    // Devolvemos solo protocolo + host (sin path) p.ej. https://bucket-xxxx.up.railway.app
-    return `${u.protocol}//${u.host}`;
+    // Devolvemos solo protocolo + host (sin path) p.ej. http(s)://bucket-xxxx.up.railway.app
+    return `${u.protocol}//${u.host}`
   } catch {
-    return RAW_ENDPOINT_CLEAN;
+    return RAW_ENDPOINT_CLEAN
   }
-})();
+})()
 
-const HAS_S3 = Boolean(S3_ENDPOINT && ACCESS_KEY && SECRET_KEY && BUCKET);
+const HAS_S3 = Boolean(S3_ENDPOINT && ACCESS_KEY && SECRET_KEY && BUCKET)
 
 const medusaConfig = {
   projectConfig: {
@@ -101,17 +104,17 @@ const medusaConfig = {
                 resolve: '@medusajs/file-s3',
                 id: 's3',
                 options: {
-                  endpoint: S3_ENDPOINT,                 // p.ej. https://bucket-production-xxxx.up.railway.app
+                  endpoint: S3_ENDPOINT,                 // p.ej. http://bucket-production-xxxx.up.railway.app
                   bucket: BUCKET,                        // p.ej. "medusa-media"
                   region: process.env.S3_REGION || 'us-west-2',
                   access_key_id: ACCESS_KEY,             // MINIO_ROOT_USER o MINIO_ACCESS_KEY
                   secret_access_key: SECRET_KEY,         // MINIO_ROOT_PASSWORD o MINIO_SECRET_KEY
 
-                  // 🔧 Forzamos path-style para evitar CN mismatch
+                  // 🔧 Forzamos path-style para evitar CN mismatch (nada de subdominio del bucket)
                   forcePathStyle: true,
                   force_path_style: true,
 
-                  // ✅ URLs públicas tipo https://endpoint/bucket/obj
+                  // ✅ URLs públicas tipo http(s)://endpoint/bucket/obj
                   cdn_url: `${S3_ENDPOINT.replace(/\/+$/, '')}/${BUCKET}`,
                 },
               },
@@ -129,9 +132,10 @@ const medusaConfig = {
             ],
       },
     },
+
     // ===== SANITY (módulo local) =====
     {
-      // 👇 Ruta corregida: el código está bajo /backend/src/modules/sanity
+      // 👇 Ruta local
       resolve: './src/modules/sanity',
       options: {
         project_id: process.env.SANITY_PROJECT_ID,
@@ -141,7 +145,7 @@ const medusaConfig = {
         // studio_url: opcional si publicas el Studio
         type_map: {
           product: 'product',
-          // podrás ampliar más adelante:
+          // podrás ampliar:
           // productVariant: 'productVariant',
           // collection: 'collection',
         },
@@ -194,7 +198,6 @@ const medusaConfig = {
                 ...(RESEND_API_KEY && RESEND_FROM_EMAIL
                   ? [
                       {
-                        // 👇 también corrijo la ruta si tu módulo está bajo /backend/src/modules
                         resolve: './backend/src/modules/email-notifications',
                         id: 'resend',
                         options: {
@@ -268,7 +271,7 @@ const medusaConfig = {
         ]
       : []),
   ],
-};
+}
 
-console.log(JSON.stringify(medusaConfig, null, 2));
-export default defineConfig(medusaConfig);
+console.log(JSON.stringify(medusaConfig, null, 2))
+export default defineConfig(medusaConfig)
