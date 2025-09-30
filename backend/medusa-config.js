@@ -46,7 +46,24 @@ const SECRET_KEY =
 
 const BUCKET = process.env.MINIO_BUCKET || MINIO_BUCKET; // <- asegúrate de setearla en Railway
 
-const S3_ENDPOINT = RAW_PUBLIC_ENDPOINT ? ensureHttpsUrl(RAW_PUBLIC_ENDPOINT) : '';
+// Normalizamos endpoint para EVITAR virtual-hosted-style con el bucket como subdominio
+// e.g. medusa-media.bucket-xxxx.up.railway.app -> bucket-xxxx.up.railway.app
+const RAW_ENDPOINT_CLEAN = RAW_PUBLIC_ENDPOINT ? ensureHttpsUrl(RAW_PUBLIC_ENDPOINT) : '';
+const S3_ENDPOINT = (() => {
+  if (!RAW_ENDPOINT_CLEAN) return '';
+  try {
+    const u = new URL(RAW_ENDPOINT_CLEAN);
+    const bucketPrefix = `${BUCKET}.`;
+    if (u.hostname.startsWith(bucketPrefix)) {
+      u.hostname = u.hostname.slice(bucketPrefix.length);
+    }
+    // Devolvemos solo protocolo + host (sin path) p.ej. https://bucket-xxxx.up.railway.app
+    return `${u.protocol}//${u.host}`;
+  } catch {
+    return RAW_ENDPOINT_CLEAN;
+  }
+})();
+
 const HAS_S3 = Boolean(S3_ENDPOINT && ACCESS_KEY && SECRET_KEY && BUCKET);
 
 const medusaConfig = {
@@ -84,17 +101,17 @@ const medusaConfig = {
                 resolve: '@medusajs/file-s3',
                 id: 's3',
                 options: {
-                  endpoint: S3_ENDPOINT,                 // p.ej. https://bucket-production-23c8.up.railway.app
+                  endpoint: S3_ENDPOINT,                 // p.ej. https://bucket-production-xxxx.up.railway.app
                   bucket: BUCKET,                        // p.ej. "medusa-media"
                   region: process.env.S3_REGION || 'us-west-2',
                   access_key_id: ACCESS_KEY,             // MINIO_ROOT_USER o MINIO_ACCESS_KEY
                   secret_access_key: SECRET_KEY,         // MINIO_ROOT_PASSWORD o MINIO_SECRET_KEY
 
-                  // 🔧 evita virtual-hosted-style -> corrige el CN del certificado
-                  force_path_style: true,
+                  // 🔧 Forzamos path-style para evitar CN mismatch
                   forcePathStyle: true,
+                  force_path_style: true,
 
-                  // ✅ Genera URLs públicas limpias: https://endpoint/bucket/obj
+                  // ✅ URLs públicas tipo https://endpoint/bucket/obj
                   cdn_url: `${S3_ENDPOINT.replace(/\/+$/, '')}/${BUCKET}`,
                 },
               },
