@@ -143,3 +143,64 @@ export const getProductsListWithSort = cache(async function ({
     queryParams,
   }
 })
+
+/**
+ * Obtiene productos destacados para la página principal
+ */
+export const getFeaturedProducts = cache(async function ({
+  limit = 8,
+  countryCode,
+}: {
+  limit?: number
+  countryCode: string
+}): Promise<HttpTypes.StoreProduct[]> {
+  const region = await getRegion(countryCode)
+
+  if (!region) {
+    return []
+  }
+
+  return sdk.store.product
+    .list(
+      {
+        limit,
+        region_id: region.id,
+        fields: "*metadata,*variants.metadata,*variants.calculated_price,+variants.inventory_quantity",
+        // Ordenar por fecha de creación descendente para obtener los más recientes
+        order: "created_at",
+      },
+      { next: { tags: ["products", "featured"] } }
+    )
+    .then(({ products }) => products)
+})
+
+/**
+ * Obtiene productos por categoría específica
+ */
+export const getProductsByCategory = cache(async function ({
+  categoryId,
+  limit = 6,
+  countryCode,
+}: {
+  categoryId: string
+  limit?: number
+  countryCode: string
+}): Promise<HttpTypes.StoreProduct[]> {
+  const region = await getRegion(countryCode)
+
+  if (!region) {
+    return []
+  }
+
+  return sdk.store.product
+    .list(
+      {
+        limit,
+        region_id: region.id,
+        category_id: [categoryId],
+        fields: "*metadata,*variants.metadata,*variants.calculated_price,+variants.inventory_quantity",
+      },
+      { next: { tags: ["products", "category"] } }
+    )
+    .then(({ products }) => products)
+})

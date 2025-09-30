@@ -4,11 +4,12 @@ import Image from "next/image"
 
 import FeaturedProducts from "@modules/home/components/featured-products"
 import Hero from "@modules/home/components/hero"
+import { ProductGrid } from "@modules/home/components/product-grid"
 import { getCollectionsWithProducts } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 
 // 👇 Sanity helpers (ruta relativa desde src/app/[countryCode]/(main)/page.tsx)
-import { sanity, urlFor } from "../../../lib/sanity"
+// import { sanity, urlFor } from "../../../lib/sanity"
 
 export const metadata: Metadata = {
   title: "Mono Banano - Productos Naturales y Saludables",
@@ -37,30 +38,39 @@ export default async function Home({
 
   if (!collections || !region) return null
 
-  // 👉 Traer algunos productos desde Sanity para portada (opcional)
+  // 👉 Traer algunos productos desde Sanity para portada (opcional) - Temporalmente deshabilitado
   let sanityProducts: SanityCard[] = []
-  try {
-    sanityProducts = await sanity.fetch(
-      `*[_type == "product"] | order(_updatedAt desc)[0..7]{
-        _id,
-        title,
-        medusaId,
-        "slug": handle.current,
-        images[]{ asset->, alt }
-      }`,
-      {},
-      // 🧠 Juega bien con el caché de Next (ISR)
-      { next: { revalidate: 60 } }
-    )
-  } catch {
-    // Silenciamos error para no romper la home si Sanity falla
-    sanityProducts = []
-  }
+  // try {
+  //   sanityProducts = await sanity.fetch(
+  //     `*[_type == "product"] | order(_updatedAt desc)[0..7]{
+  //       _id,
+  //       title,
+  //       medusaId,
+  //       "slug": handle.current,
+  //       images[]{ asset->, alt }
+  //     }`,
+  //     {},
+  //     // 🧠 Juega bien con el caché de Next (ISR)
+  //     { next: { revalidate: 60 } }
+  //   )
+  // } catch {
+  //   // Silenciamos error para no romper la home si Sanity falla
+  //   sanityProducts = []
+  // }
 
   return (
     <>
       {/* Hero Section */}
       <Hero />
+
+      {/* Productos Destacados Grid */}
+      <ProductGrid 
+        countryCode={countryCode}
+        limit={8}
+        title="Productos Destacados"
+        subtitle="Descubre nuestra selección cuidadosamente curada de productos más populares y mejor valorados por nuestros clientes"
+        showViewAll={true}
+      />
 
       {/* Featured Products Sections (Medusa) */}
       <div className="section-container bg-white">
