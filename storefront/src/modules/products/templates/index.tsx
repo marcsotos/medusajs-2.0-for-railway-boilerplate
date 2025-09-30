@@ -28,19 +28,28 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
 
   return (
     <>
+      {/* Contenedor principal del producto */}
       <div
-        className="content-container flex flex-col small:flex-row small:items-start py-6 relative"
+        className="content-container flex flex-col lg:flex-row lg:items-start py-6 lg:py-12 gap-8 lg:gap-12 relative"
         data-testid="product-container"
       >
-        <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-6">
-          <ProductInfo product={product} />
-          <ProductTabs product={product} />
-        </div>
-        <div className="block w-full relative">
+        {/* Columna izquierda: Galería de imágenes (60% del espacio) */}
+        <div className="w-full lg:w-[60%] lg:sticky lg:top-24">
           <ImageGallery images={product?.images || []} />
         </div>
-        <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-12">
+
+        {/* Columna derecha: Información y acciones (40% del espacio) */}
+        <div className="w-full lg:w-[40%] flex flex-col gap-y-8">
+          {/* Información del producto */}
+          <ProductInfo product={product} />
+
+          {/* Separator visual */}
+          <div className="border-t border-ui-border-base" />
+
+          {/* CTA de Onboarding (si aplica) */}
           <ProductOnboardingCta />
+
+          {/* Acciones del producto (Add to cart, variantes, etc) */}
           <Suspense
             fallback={
               <ProductActions
@@ -52,8 +61,16 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
           >
             <ProductActionsWrapper id={product.id} region={region} />
           </Suspense>
+
+          {/* Separator visual */}
+          <div className="border-t border-ui-border-base" />
+
+          {/* Tabs de información adicional */}
+          <ProductTabs product={product} />
         </div>
       </div>
+
+      {/* Productos relacionados */}
       <div
         className="content-container my-16 small:my-32"
         data-testid="related-products-container"
