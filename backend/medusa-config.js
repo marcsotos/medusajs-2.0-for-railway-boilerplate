@@ -217,6 +217,13 @@ const medusaConfig = {
       : []),
   ],
   plugins: [
+    // 👇 AÑADIDO: medusa-variant-images
+    {
+      resolve: 'medusa-variant-images',
+      options: {},
+    },
+
+    // (Condicional) Meilisearch
     ...(MEILISEARCH_HOST && MEILISEARCH_ADMIN_KEY
       ? [
           {

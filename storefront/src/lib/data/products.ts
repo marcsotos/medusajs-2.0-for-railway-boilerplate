@@ -17,9 +17,8 @@ export const getProductsById = cache(async function ({
       {
         id: ids,
         region_id: regionId,
-        // 👇 Incluimos metadata a nivel producto y variante
-        fields:
-          "*metadata,*variants.metadata,*variants.calculated_price,+variants.inventory_quantity",
+        // Requested: keep only metadata and variant inventory
+        fields: "+metadata,+variants.metadata,+variants.inventory_quantity",
       },
       { next: { tags: ["products"] } }
     )
@@ -35,9 +34,8 @@ export const getProductByHandle = cache(async function (
       {
         handle,
         region_id: regionId,
-        // 👇 Añadimos metadata para que llegue a tu ProductTabs
-        fields:
-          "*metadata,*variants.metadata,*variants.calculated_price,+variants.inventory_quantity",
+        // Requested fields
+        fields: "+metadata,+variants.metadata,+variants.inventory_quantity",
       },
       { next: { tags: ["products"] } }
     )
@@ -75,9 +73,8 @@ export const getProductsList = cache(async function ({
         limit,
         offset,
         region_id: region.id,
-        // 👇 También aquí para listados (útil si muestras ingredientes en cards)
-        fields:
-          "*metadata,*variants.metadata,*variants.calculated_price",
+        // Requested fields for listings
+        fields: "+metadata,+variants.metadata,+variants.inventory_quantity",
         ...queryParams,
       },
       { next: { tags: ["products"] } }
@@ -165,7 +162,7 @@ export const getFeaturedProducts = cache(async function ({
       {
         limit,
         region_id: region.id,
-        fields: "*metadata,*variants.metadata,*variants.calculated_price,+variants.inventory_quantity",
+        fields: "+metadata,+variants.metadata,+variants.inventory_quantity",
         // Ordenar por fecha de creación descendente para obtener los más recientes
         order: "created_at",
       },
@@ -198,7 +195,7 @@ export const getProductsByCategory = cache(async function ({
         limit,
         region_id: region.id,
         category_id: [categoryId],
-        fields: "*metadata,*variants.metadata,*variants.calculated_price,+variants.inventory_quantity",
+        fields: "+metadata,+variants.metadata,+variants.inventory_quantity",
       },
       { next: { tags: ["products", "category"] } }
     )

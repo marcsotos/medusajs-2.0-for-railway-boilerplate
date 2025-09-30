@@ -8,6 +8,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { useIntersection } from "@lib/hooks/use-in-view"
 import Divider from "@modules/common/components/divider"
 import OptionSelect from "@modules/products/components/product-actions/option-select"
+import { VariantGallery } from "@modules/products/components/variant-gallery"
 
 import MobileActions from "./mobile-actions"
 import ProductPrice from "../product-price"
@@ -132,6 +133,11 @@ export default function ProductActions({
             </div>
           )}
         </div>
+
+        {/* Variant-specific gallery if metadata images are present */}
+        {selectedVariant ? (
+          <VariantGallery variant={selectedVariant as any} />
+        ) : null}
 
         <ProductPrice product={product} variant={selectedVariant} />
 
