@@ -1,3 +1,4 @@
+// medusa-config.js
 import { loadEnv, Modules, defineConfig } from '@medusajs/utils'
 import {
   ADMIN_CORS,
@@ -16,7 +17,6 @@ import {
   STRIPE_API_KEY,
   STRIPE_WEBHOOK_SECRET,
   WORKER_MODE,
-  // Mantengo estos MINIO_* de tus constants para compatibilidad
   MINIO_ENDPOINT,
   MINIO_ACCESS_KEY,
   MINIO_SECRET_KEY,
@@ -27,17 +27,15 @@ import {
 
 loadEnv(process.env.NODE_ENV, process.cwd())
 
-/** Helpers */
-const ensureHttpUrl = (val: string | undefined | null) => {
+/** Helpers (sin tipos TS) */
+const ensureHttpUrl = (val) => {
   if (!val) return ''
   const trimmed = String(val).trim()
-  // Respeta http/https si ya viene definido
   if (/^https?:\/\//i.test(trimmed)) return trimmed
-  // Por defecto usa http para evitar CN mismatch si el cert no cubre subdominios
   return `http://${trimmed}`
 }
 
-// --- Tomamos primero las vars “nuevas” de Railway si existen, si no las de constants ---
+// --- Prioriza envs de Railway, luego las de constants ---
 const RAW_PUBLIC_ENDPOINT =
   process.env.MINIO_PUBLIC_ENDPOINT || process.env.MINIO_ENDPOINT || MINIO_ENDPOINT
 
@@ -47,10 +45,9 @@ const ACCESS_KEY =
 const SECRET_KEY =
   process.env.MINIO_SECRET_KEY || process.env.MINIO_ROOT_PASSWORD || MINIO_SECRET_KEY
 
-const BUCKET = process.env.MINIO_BUCKET || MINIO_BUCKET // <- asegúrate de setearla en Railway
+const BUCKET = process.env.MINIO_BUCKET || MINIO_BUCKET
 
-// Normalizamos endpoint para EVITAR virtual-hosted-style con el bucket como subdominio
-// e.g. medusa-media.bucket-xxxx.up.railway.app -> bucket-xxxx.up.railway.app
+// Normaliza endpoint para evitar virtual-hosted-style
 const RAW_ENDPOINT_CLEAN = RAW_PUBLIC_ENDPOINT ? ensureHttpUrl(RAW_PUBLIC_ENDPOINT) : ''
 const S3_ENDPOINT = (() => {
   if (!RAW_ENDPOINT_CLEAN) return ''
@@ -60,7 +57,6 @@ const S3_ENDPOINT = (() => {
     if (u.hostname.startsWith(bucketPrefix)) {
       u.hostname = u.hostname.slice(bucketPrefix.length)
     }
-    // Devolvemos solo protocolo + host (sin path) p.ej. http(s)://bucket-xxxx.up.railway.app
     return `${u.protocol}//${u.host}`
   } catch {
     return RAW_ENDPOINT_CLEAN
@@ -104,23 +100,18 @@ const medusaConfig = {
                 resolve: '@medusajs/file-s3',
                 id: 's3',
                 options: {
-                  endpoint: S3_ENDPOINT,                 // p.ej. http://bucket-production-xxxx.up.railway.app
-                  bucket: BUCKET,                        // p.ej. "medusa-media"
+                  endpoint: S3_ENDPOINT, // ej: https://bucket-production-23c8.up.railway.app
+                  bucket: BUCKET,        // ej: "medusa-media"
                   region: process.env.S3_REGION || 'us-west-2',
-                  access_key_id: ACCESS_KEY,             // MINIO_ROOT_USER o MINIO_ACCESS_KEY
-                  secret_access_key: SECRET_KEY,         // MINIO_ROOT_PASSWORD o MINIO_SECRET_KEY
-
-                  // 🔧 Forzamos path-style para evitar CN mismatch (nada de subdominio del bucket)
+                  access_key_id: ACCESS_KEY,
+                  secret_access_key: SECRET_KEY,
                   forcePathStyle: true,
                   force_path_style: true,
-
-                  // ✅ URLs públicas tipo http(s)://endpoint/bucket/obj
                   cdn_url: `${S3_ENDPOINT.replace(/\/+$/, '')}/${BUCKET}`,
                 },
               },
             ]
           : [
-              // Fallback a local si faltan variables del bucket
               {
                 resolve: '@medusajs/file-local',
                 id: 'local',
@@ -135,19 +126,14 @@ const medusaConfig = {
 
     // ===== SANITY (módulo local) =====
     {
-      // 👇 Ruta local
       resolve: './src/modules/sanity',
       options: {
         project_id: process.env.SANITY_PROJECT_ID,
         dataset: process.env.SANITY_DATASET || 'production',
         api_token: process.env.SANITY_API_TOKEN,
         api_version: process.env.SANITY_API_VERSION || '2024-01-01',
-        // studio_url: opcional si publicas el Studio
         type_map: {
           product: 'product',
-          // podrás ampliar:
-          // productVariant: 'productVariant',
-          // collection: 'collection',
         },
       },
     },
@@ -158,18 +144,12 @@ const medusaConfig = {
           {
             key: Modules.EVENT_BUS,
             resolve: '@medusajs/event-bus-redis',
-            options: {
-              redisUrl: REDIS_URL,
-            },
+            options: { redisUrl: REDIS_URL },
           },
           {
             key: Modules.WORKFLOW_ENGINE,
             resolve: '@medusajs/workflow-engine-redis',
-            options: {
-              redis: {
-                url: REDIS_URL,
-              },
-            },
+            options: { redis: { url: REDIS_URL } },
           },
         ]
       : []),
@@ -226,7 +206,7 @@ const medusaConfig = {
                   resolve: '@medusajs/payment-stripe',
                   id: 'stripe',
                   options: {
-                    apiKey: STRIPE_API_KEY,
+                    apiKey: STRIPE_API_KEY,          // <-- Debe ser SK (sk_...), no PK
                     webhookSecret: STRIPE_WEBHOOK_SECRET,
                   },
                 },
@@ -237,22 +217,14 @@ const medusaConfig = {
       : []),
   ],
   plugins: [
-    // 👇 AÑADIDO: medusa-variant-images
-    {
-      resolve: 'medusa-variant-images',
-      options: {},
-    },
+    { resolve: 'medusa-variant-images', options: {} },
 
-    // (Condicional) Meilisearch
     ...(MEILISEARCH_HOST && MEILISEARCH_ADMIN_KEY
       ? [
           {
             resolve: '@rokmohar/medusa-plugin-meilisearch',
             options: {
-              config: {
-                host: MEILISEARCH_HOST,
-                apiKey: MEILISEARCH_ADMIN_KEY,
-              },
+              config: { host: MEILISEARCH_HOST, apiKey: MEILISEARCH_ADMIN_KEY },
               settings: {
                 products: {
                   type: 'products',
@@ -273,5 +245,9 @@ const medusaConfig = {
   ],
 }
 
-console.log(JSON.stringify(medusaConfig, null, 2))
+// ⚠️ Evita imprimir secretos en producción
+if (process.env.NODE_ENV === 'development') {
+  console.log(JSON.stringify(medusaConfig, null, 2))
+}
+
 export default defineConfig(medusaConfig)
